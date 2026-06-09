@@ -9,20 +9,19 @@ const pool = mysql.createPool({
   password: process.env.DB_PASS     || '',
   database: process.env.DB_NAME     || 'hima_vote',
   waitForConnections: true,
-  connectionLimit:    10,
+  connectionLimit:    5, // Kurangi limit agar ramah terhadap serverless scaling
   queueLimit:         0,
   charset:  'utf8mb4',
 });
 
-// Test connection on startup
+// Test connection on startup (log error, but do not terminate process in serverless)
 pool.getConnection()
   .then(conn => {
     console.log('✅ Database MySQL terhubung');
     conn.release();
   })
   .catch(err => {
-    console.error('❌ Gagal koneksi ke database:', err.message);
-    process.exit(1);
+    console.error('❌ Gagal koneksi ke database pada startup:', err.message);
   });
 
 module.exports = pool;
