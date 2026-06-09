@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HMIF UMBANDUNG  — Best Division of the Month</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+   --bg:#000000; --surface:#0d0000; --card:#150000; --card2:#1a0000;
+  --border:rgba(200,0,0,0.15); --border2:rgba(220,0,0,0.25);
+  --blue:#cc0000; --blue-lt:#e82222; --cyan:#ff3333;
+  --amber:#f59e0b; --rose:#f43f5e; --green:#22c55e;
+  --text:#fff0f0; --text2:#a08080; --text3:#5a3333;
+  --r:14px; --r2:20px;
+  .logo-icon img,
+.nav-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* optional biar lebih clean */
+.logo-icon,
+.nav-logo {
+  overflow: hidden;
+}
+
+  
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-fx::before{content:'';position:absolute;width:900px;height:900px;background:radial-gradient(circle,rgba(37,99,235,0.18) 0%,transparent 70%);top:-300px;left:-200px;animation:driftA 18s ease-in-out infinite alternate}
+.bg-fx::after{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(6,182,212,0.12) 0%,transparent 70%);bottom:-200px;right:-100px;animation:driftB 14s ease-in-out infinite alternate}
+@keyframes driftA{from{transform:translate(0,0)}to{transform:translate(80px,60px)}}
+@keyframes driftB{from{transform:translate(0,0)}to{transform:translate(-60px,-40px)}}
+.noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px}
+
+/* ── VOTE ANGGOTA TAB ── */
+.member-vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;margin-top:4px}
+.mv-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .25s;animation:fadeUp .35s ease both;position:relative}
+.mv-card:hover:not(.disabled){transform:translateY(-5px);box-shadow:0 22px 55px rgba(0,0,0,.55);border-color:var(--border2)}
+.mv-card.selected{border-color:var(--amber);box-shadow:0 0 0 2px rgba(245,158,11,.4),0 20px 50px rgba(0,0,0,.5)}
+.mv-card.disabled{cursor:default;opacity:.85}
+.mv-card.my-member-vote{border-color:var(--amber)}
+.mv-card .mc-photo{height:150px;position:relative}
+.mv-winner-tag{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;z-index:2;letter-spacing:.5px}
+.mv-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.mv-card.selected .mv-radio{background:var(--amber);border-color:var(--amber)}
+.mv-card.selected .mv-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+.mv-body{padding:12px 14px 14px}
+.mv-name{font-family:'Clash Display',sans-serif;font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv-meta{font-size:11px;color:var(--text3);margin-bottom:6px}
+.mv-div-badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:10px;color:var(--text2);margin-bottom:8px}
+.mv-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.mv-bar-wrap{margin-top:6px}
+.mv-bar-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-bottom:4px}
+.mv-bar{height:4px;background:var(--surface);border-radius:999px;overflow:hidden}
+.mv-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#f59e0b,#ef4444);width:0%;transition:width .8s cubic-bezier(.25,.46,.45,.94)}
+.my-member-vote-tag{font-size:10px;color:var(--amber);font-weight:700;margin-top:4px}
+.vote-member-voted-alert{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:16px 20px;display:none;align-items:center;gap:14px;margin-bottom:28px;animation:fadeUp .4s ease}
+.vote-member-voted-alert.show{display:flex}
+.vm-filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.vm-filter-bar input,.vm-filter-bar select{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:9px 14px;color:var(--text);font-size:13px;outline:none;transition:border-color .2s}
+.vm-filter-bar input:focus,.vm-filter-bar select:focus{border-color:var(--amber)}
+.vm-filter-bar input{width:200px}
+.vm-count-label{font-size:12px;color:var(--text2);margin-left:auto}
+@media(max-width:700px){
+  .member-vote-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}
+  .vm-filter-bar input{width:140px}
+}
+
+.screen{display:none;position:relative;z-index:1}
+.screen.active{display:block}
+#login-screen.active,#success-screen.active{display:flex}
+
+/* ── LOGIN ── */
+#login-screen{min-height:100vh;align-items:center;justify-content:center;padding:24px}
+.login-wrap{width:100%;max-width:440px;animation:fadeUp .5s ease both}
+.login-header{text-align:center;margin-bottom:28px}
+.login-logo-mark{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:16px;padding:10px 20px;margin-bottom:20px}
+.login-logo-mark .logo-icon{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.login-logo-mark span{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:1px}
+.login-header h1{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.login-header p{color:var(--text2);font-size:14px}
+.login-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);padding:36px 32px;box-shadow:0 40px 100px rgba(0,0,0,.6)}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:8px}
+.field input,.field select{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:13px 16px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus{border-color:var(--blue-lt);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.field input::placeholder{color:var(--text3)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.btn-main{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:var(--r);color:#fff;font-family:'Clash Display',sans-serif;font-size:15px;font-weight:600;letter-spacing:.5px;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 8px 24px rgba(37,99,235,.35);margin-top:4px}
+.btn-main:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
+.btn-main:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.alert{border-radius:var(--r);padding:11px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+.alert.show{display:flex}
+.alert-error{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);color:#fb7185}
+.login-hint{text-align:center;margin-top:20px;font-size:12px;color:var(--text3);line-height:1.7}
+.login-hint code{background:var(--card2);border-radius:5px;padding:1px 6px;color:var(--cyan);font-size:11px}
+
+/* ── NAVBAR ── */
+#app-screen{min-height:100vh}
+.navbar{position:sticky;top:0;z-index:100;background:rgba(4,6,15,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px}
+.navbar-inner{max-width:1100px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700}
+.nav-title span{color:var(--cyan)}
+.nav-tabs{display:flex;gap:4px;background:var(--surface);border-radius:12px;padding:4px;border:1px solid var(--border)}
+.nav-tab{padding:7px 14px;border-radius:9px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{background:var(--card2);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.nav-tab.admin-tab{display:none}
+.nav-tab.admin-tab.show{display:flex}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border2);border-radius:999px;padding:5px 14px 5px 5px}
+.user-ava{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.user-name{font-size:13px;font-weight:500}
+.btn-logout{background:transparent;border:1px solid var(--border2);border-radius:8px;padding:6px 12px;color:var(--text2);font-size:12px;font-weight:500;transition:all .2s}
+.btn-logout:hover{color:var(--rose);border-color:rgba(244,63,94,.4)}
+
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.page-wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+
+/* ── VOTE TAB ── */
+.vote-hero{text-align:center;margin-bottom:48px;animation:fadeUp .5s ease both}
+.period-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);border-radius:999px;padding:6px 16px;font-size:13px;color:var(--blue-lt);font-weight:500;margin-bottom:20px}
+.vote-hero h1{font-family:'Clash Display',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:700;line-height:1.1;margin-bottom:14px}
+.vote-hero h1 .grad{background:linear-gradient(90deg,var(--blue-lt),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.vote-hero p{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto;line-height:1.7}
+.voted-alert{max-width:700px;margin:0 auto 36px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:var(--r2);padding:18px 24px;display:none;align-items:center;gap:14px}
+.voted-alert.show{display:flex}
+.voted-alert .va-icon{font-size:28px;flex-shrink:0}
+.voted-alert .va-text strong{display:block;color:var(--green);margin-bottom:2px;font-size:14px}
+.voted-alert .va-text span{color:var(--text2);font-size:13px}
+
+/* ── DIVISION CARDS (with photo) ── */
+.divisions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-bottom:36px}
+
+.div-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:all .25s;position:relative;overflow:hidden;animation:fadeUp .5s ease both;display:flex;flex-direction:column}
+.div-card::after{content:'';position:absolute;inset:0;border-radius:var(--r2);border:2px solid transparent;transition:border-color .25s;pointer-events:none}
+.div-card:hover{background:var(--card2);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.div-card.selected{background:rgba(37,99,235,.08)}
+.div-card.selected::after{border-color:var(--blue-lt)}
+.div-card.disabled{cursor:default;pointer-events:none}
+
+/* Photo section */
+.dc-photo{width:100%;height:180px;background:var(--surface);position:relative;overflow:hidden;flex-shrink:0}
+.dc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.div-card:hover .dc-photo img{transform:scale(1.05)}
+.dc-photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3)}
+.dc-photo-placeholder .ph-icon{font-size:40px;opacity:.5}
+.dc-photo-placeholder span{font-size:12px}
+.dc-photo-gradient{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,transparent,var(--card))}
+.div-card.selected .dc-photo-gradient{background:linear-gradient(to bottom,transparent,rgba(8,18,45,0.9))}
+
+/* Card body */
+.dc-body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column}
+.dc-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.dc-icon-badge{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.dc-radio{width:22px;height:22px;border:2px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.div-card.selected .dc-radio{border-color:var(--blue-lt);background:var(--blue-lt)}
+.div-card.selected .dc-radio::after{content:'';width:8px;height:8px;background:#fff;border-radius:50%}
+.dc-name{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px}
+.dc-desc{font-size:13px;color:var(--text2);line-height:1.6;flex:1}
+.dc-bar-wrap{margin-top:16px}
+.dc-bar-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px}
+.dc-bar-row b{color:var(--text);font-weight:600}
+.dc-bar{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.dc-bar-fill{height:100%;border-radius:999px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+
+/* Tags */
+.winner-tag{position:absolute;top:12px;right:12px;z-index:2;background:linear-gradient(135deg,var(--amber),#fbbf24);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;color:#000;letter-spacing:.4px;font-family:'Clash Display',sans-serif;box-shadow:0 4px 12px rgba(245,158,11,.4)}
+.my-vote-tag{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.3);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--blue-lt);width:fit-content}
+
+/* Submit */
+.vote-submit{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.btn-vote{padding:16px 56px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:var(--r2);color:#fff;font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;transition:all .2s;box-shadow:0 10px 30px rgba(37,99,235,.35)}
+.btn-vote:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 40px rgba(37,99,235,.45)}
+.btn-vote:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+.vote-hint{font-size:13px;color:var(--text2)}
+
+/* ── RESULTS ── */
+.results-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+.results-header h2{font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700}
+.results-header p{color:var(--text2);font-size:14px;margin-top:4px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:36px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:22px 20px;animation:fadeUp .4s ease both}
+.stat-card .sc-label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px}
+.stat-card .sc-value{font-family:'Clash Display',sans-serif;font-size:32px;font-weight:700}
+.stat-card .sc-sub{font-size:13px;color:var(--text2);margin-top:4px}
+.stat-card.blue .sc-value{color:var(--blue-lt)}
+.stat-card.cyan .sc-value{color:var(--cyan)}
+.stat-card.amber .sc-value{font-size:15px;margin-top:8px;color:var(--amber)}
+.stat-card.green .sc-value{color:var(--green)}
+.section-title{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.section-title .badge{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:3px 10px;font-size:12px;color:var(--text2)}
+
+/* Podium with photos */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.podium-item{display:flex;flex-direction:column;align-items:center;flex:1;min-width:130px;max-width:210px;animation:fadeUp .5s ease both}
+.podium-item.rank-1{order:2}
+.podium-item.rank-2{order:1}
+.podium-item.rank-3{order:3}
+.podium-photo{width:72px;height:72px;border-radius:50%;overflow:hidden;margin-bottom:10px;border:3px solid var(--border2)}
+.rank-1 .podium-photo{width:88px;height:88px;border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.3)}
+.rank-2 .podium-photo{border-color:#94a3b8}
+.rank-3 .podium-photo{border-color:#cd7c3a}
+.podium-photo img{width:100%;height:100%;object-fit:cover}
+.podium-photo-placeholder{width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:28px}
+.rank-1 .podium-photo-placeholder{font-size:34px}
+.podium-name{font-family:'Clash Display',sans-serif;font-size:13px;font-weight:600;text-align:center;margin-bottom:4px}
+.podium-votes{font-size:12px;color:var(--text2);margin-bottom:6px}
+.podium-pct{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px}
+.podium-block{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700}
+.rank-1 .podium-block{height:120px;background:linear-gradient(180deg,rgba(245,158,11,.25),rgba(245,158,11,.08));border:1px solid rgba(245,158,11,.35);color:var(--amber)}
+.rank-2 .podium-block{height:90px;background:linear-gradient(180deg,rgba(148,163,184,.2),rgba(148,163,184,.06));border:1px solid rgba(148,163,184,.25);color:#94a3b8}
+.rank-3 .podium-block{height:65px;background:linear-gradient(180deg,rgba(180,83,9,.2),rgba(180,83,9,.06));border:1px solid rgba(180,83,9,.25);color:#cd7c3a}
+
+/* Horizontal bar chart */
+.bar-chart{display:flex;flex-direction:column;gap:16px}
+.bc-row{display:grid;align-items:center;grid-template-columns:56px 160px 1fr 90px;gap:14px;animation:fadeUp .4s ease both}
+.bc-avatar{width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0}
+.bc-avatar img{width:100%;height:100%;object-fit:cover}
+.bc-avatar-ph{width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px}
+.bc-label{font-size:14px;font-weight:500;display:flex;flex-direction:column;gap:2px}
+.bc-label small{font-size:11px;color:var(--text2)}
+.bc-track{height:10px;background:rgba(255,255,255,.05);border-radius:999px;overflow:hidden}
+.bc-fill{height:100%;border-radius:999px;transition:width 1s cubic-bezier(.34,1.56,.64,1)}
+.bc-num{font-family:'Clash Display',sans-serif;font-size:14px;font-weight:600;text-align:right}
+
+/* ── ADMIN ── */
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:40px}
+.admin-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:24px;animation:fadeUp .4s ease both}
+.admin-card h3{font-family:'Clash Display',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.admin-card h3 .ac-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+
+/* Photo management per division */
+.photo-mgmt-list{display:flex;flex-direction:column;gap:12px}
+.photo-mgmt-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border-radius:var(--r);border:1px solid var(--border)}
+.pmi-thumb{width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--card)}
+.pmi-thumb img{width:100%;height:100%;object-fit:cover}
+.pmi-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.pmi-info{flex:1;min-width:0}
+.pmi-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.pmi-status{font-size:11px;color:var(--text2)}
+.pmi-actions{display:flex;gap:6px;flex-shrink:0}
+.btn-upload-photo{padding:6px 12px;background:rgba(37,99,235,.12);border:1px solid rgba(59,130,246,.25);border-radius:8px;color:var(--blue-lt);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.btn-upload-photo:hover{background:rgba(37,99,235,.2)}
+.btn-upload-photo input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.btn-del-photo{padding:6px 10px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.2);border-radius:8px;color:#fb7185;font-size:12px;cursor:pointer;transition:all .2s}
+.btn-del-photo:hover{background:rgba(244,63,94,.16)}
+.upload-progress{height:3px;background:var(--border);border-radius:999px;margin-top:6px;overflow:hidden;display:none}
+.upload-progress.show{display:block}
+.upload-progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:999px;width:0%;transition:width .3s}
+.btn-edit-div{padding:6px 12px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:8px;color:#c084fc;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-edit-div:hover{background:rgba(168,85,247,.2)}
+.edit-div-fields{display:flex;flex-direction:column;gap:12px;text-align:left}
+.edit-div-fields .field{margin-bottom:0}
+.edit-div-fields textarea{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:12px 16px;color:var(--text);font-size:14px;outline:none;resize:vertical;min-height:72px;transition:border-color .2s}
+.edit-div-fields textarea:focus{border-color:var(--blue-lt);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.edit-div-fields textarea::placeholder{color:var(--text3)}
+
+/* User table */
+.user-table{width:100%;border-collapse:collapse}
+.user-table th{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.user-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border)}
+.user-table tr:last-child td{border-bottom:none}
+.u-role{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+.u-role.admin{background:rgba(245,158,11,.15);color:var(--amber)}
+.u-role.voter{background:rgba(37,99,235,.12);color:var(--blue-lt)}
+.voted-dot{display:inline-block;width:8px;height:8px;border-radius:50%}
+.voted-dot.yes{background:var(--green)}
+.voted-dot.no{background:var(--border2)}
+
+.add-user-form{display:flex;flex-direction:column;gap:12px}
+.add-user-form .field{margin-bottom:0}
+.add-user-form .row{display:flex;gap:10px}
+.add-user-form .row .field{flex:1}
+.btn-add{padding:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;transition:all .2s}
+.btn-add:hover{opacity:.85}
+.btn-danger{width:100%;padding:13px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:var(--r);color:var(--rose);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn-danger:hover{background:rgba(244,63,94,.14)}
+.btn-export{width:100%;padding:13px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:var(--r);color:var(--green);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn-export:hover{background:rgba(34,197,94,.14)}
+.btn-export-pdf{width:100%;padding:13px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);color:var(--amber);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn-export-pdf:hover{background:rgba(245,158,11,.14)}
+.admin-log{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto}
+.log-entry{font-size:12px;color:var(--text2);padding:7px 10px;background:var(--surface);border-radius:8px;display:flex;align-items:center;gap:8px}
+.log-entry .log-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.log-time{color:var(--text3);margin-left:auto;font-size:11px}
+.period-form{display:flex;flex-direction:column;gap:12px}
+
+/* ── MEMBERS TAB ── */
+/* Stats bar */
+.members-stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.ms-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;animation:fadeUp .4s ease both;display:flex;align-items:center;gap:14px}
+.ms-icon{font-size:26px;flex-shrink:0}
+.ms-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}
+.ms-value{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:var(--text)}
+
+/* Toolbar */
+.members-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.members-toolbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.members-toolbar input,.members-toolbar select{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:9px 14px;color:var(--text);font-size:13px;outline:none;transition:border-color .2s}
+.members-toolbar input:focus,.members-toolbar select:focus{border-color:var(--blue-lt)}
+.members-toolbar input{width:210px}
+.view-toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px}
+.view-btn{padding:6px 11px;border:none;border-radius:8px;background:transparent;color:var(--text2);font-size:14px;cursor:pointer;transition:all .2s}
+.view-btn.active{background:var(--card2);color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+
+/* Division sections */
+.div-section{margin-bottom:40px;animation:fadeUp .5s ease both}
+.div-section-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.div-section-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.div-section-info{flex:1}
+.div-section-name{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700}
+.div-section-count{font-size:12px;color:var(--text2);margin-top:2px}
+.div-section-bar{height:3px;border-radius:999px;margin-top:6px;width:80px}
+
+/* ── DIVISION BANNER PHOTO (Divisi View) ── */
+.div-section-banner{width:100%;height:160px;border-radius:var(--r2) var(--r2) 0 0;overflow:hidden;position:relative;margin-bottom:-14px;flex-shrink:0}
+.div-section-banner img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.div-section-banner:hover img{transform:scale(1.04)}
+.div-section-banner-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,var(--card2),var(--surface))}
+.div-section-banner-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.7))}
+.div-section-with-banner{background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);overflow:hidden;margin-bottom:40px;animation:fadeUp .5s ease both}
+.div-section-header-inner{display:flex;align-items:center;gap:14px;padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+.div-section-banner-actions{position:absolute;bottom:8px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity .2s}
+.div-section-banner:hover .div-section-banner-actions{opacity:1}
+.div-section-members-wrap{padding:18px 16px 20px}
+
+/* Admin: drag-drop photo upload modal */
+.photo-upload-modal-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:500px;animation:pop .3s ease both;overflow:hidden;padding:28px 28px 24px}
+.photo-upload-title{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.photo-upload-subtitle{font-size:13px;color:var(--text2);margin-bottom:20px}
+.photo-dropzone{border:2px dashed var(--border2);border-radius:14px;padding:36px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--surface)}
+.photo-dropzone.drag-over{border-color:var(--blue-lt);background:rgba(37,99,235,.08)}
+.photo-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-dropzone-icon{font-size:36px;margin-bottom:10px}
+.photo-dropzone-label{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.photo-dropzone-hint{font-size:12px;color:var(--text3)}
+.photo-preview-wrap{display:none;margin-top:16px;border-radius:12px;overflow:hidden;position:relative;height:200px}
+.photo-preview-wrap.show{display:block}
+.photo-preview-wrap img{width:100%;height:100%;object-fit:cover}
+.photo-preview-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+.photo-upload-progress{height:4px;background:var(--border);border-radius:999px;margin-top:12px;overflow:hidden;display:none}
+.photo-upload-progress.show{display:block}
+.photo-upload-progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:999px;width:0%;transition:width .3s}
+.photo-upload-actions{display:flex;gap:10px;margin-top:18px}
+.btn-upload-confirm{flex:1;padding:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:var(--r);color:#fff;font-family:'Clash Display',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn-upload-confirm:disabled{opacity:.4;cursor:not-allowed}
+.btn-upload-cancel{padding:12px 20px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:14px;cursor:pointer;transition:all .2s}
+.btn-upload-cancel:hover{border-color:var(--rose);color:var(--rose)}
+
+/* Member card upload overlay (on hover, admin only) */
+.mc-upload-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;cursor:pointer}
+.member-card:hover .mc-upload-overlay{opacity:1}
+.mc-upload-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:10px;padding:8px 14px;color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(6px);pointer-events:none}
+.mc-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+/* Card grid view */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+.member-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .25s;animation:fadeUp .35s ease both;cursor:pointer;display:flex;flex-direction:column}
+.member-card:hover{background:var(--card2);transform:translateY(-5px);box-shadow:0 22px 55px rgba(0,0,0,.55)}
+.mc-photo{width:100%;height:150px;background:var(--surface);overflow:hidden;flex-shrink:0;position:relative}
+.mc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.member-card:hover .mc-photo img{transform:scale(1.07)}
+.mc-photo-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,var(--card2),var(--surface))}
+.mc-body{padding:13px 15px 15px;flex:1;display:flex;flex-direction:column}
+.mc-name{font-family:'Clash Display',sans-serif;font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-nim{font-size:11px;color:var(--text3);margin-bottom:7px}
+.mc-position{font-size:11px;color:var(--cyan);font-weight:600;margin-bottom:3px}
+.mc-angkatan{font-size:11px;color:var(--text3)}
+.mc-actions{display:flex;gap:5px;margin-top:auto;padding-top:10px;opacity:0;transition:opacity .2s}
+.member-card:hover .mc-actions{opacity:1}
+.mc-btn{flex:1;padding:5px 0;border-radius:7px;border:none;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.mc-btn-profile{background:rgba(59,130,246,.12);color:var(--blue-lt)}
+.mc-btn-profile:hover{background:rgba(59,130,246,.22)}
+
+/* List / table view */
+.members-list{display:flex;flex-direction:column;gap:8px}
+.ml-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease both}
+.ml-row:hover{background:var(--card2);border-color:var(--border2);transform:translateX(4px)}
+.ml-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--surface)}
+.ml-avatar img{width:100%;height:100%;object-fit:cover}
+.ml-avatar-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ml-name{font-weight:600;font-size:14px;flex:1;min-width:0}
+.ml-nim{font-size:11px;color:var(--text3);margin-top:1px}
+.ml-badge{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--text2);white-space:nowrap}
+.ml-position{font-size:12px;color:var(--cyan);white-space:nowrap}
+.ml-angkatan{font-size:12px;color:var(--text3);white-space:nowrap;min-width:60px}
+
+/* Profile modal */
+.profile-modal-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:480px;animation:pop .3s ease both;overflow:hidden}
+.pm-cover{height:100px;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:0}
+.pm-avatar{width:88px;height:88px;border-radius:50%;overflow:hidden;border:4px solid var(--card);position:absolute;bottom:-44px;left:50%;transform:translateX(-50%);background:var(--surface)}
+.pm-avatar img{width:100%;height:100%;object-fit:cover}
+.pm-avatar-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px}
+.pm-body{padding:56px 28px 28px;text-align:center}
+.pm-name{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px}
+.pm-nim{font-size:12px;color:var(--text2);margin-bottom:16px}
+.pm-tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:16px}
+.pm-tag{background:var(--card2);border:1px solid var(--border2);border-radius:999px;padding:5px 14px;font-size:12px;color:var(--text2)}
+.pm-tag.highlight{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.3);color:var(--cyan)}
+.pm-bio{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:18px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0}
+.pm-contacts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:left}
+.pm-contact{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:10px;padding:10px 14px}
+.pm-contact-icon{font-size:16px;flex-shrink:0}
+.pm-contact-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px}
+.pm-contact-val{font-size:13px;font-weight:500}
+
+/* member photo upload in table */
+.btn-member-photo{padding:5px 10px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);border-radius:8px;color:var(--cyan);font-size:11px;font-weight:600;cursor:pointer;position:relative;overflow:hidden;white-space:nowrap}
+.btn-member-photo input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pmi-del-btn{padding:5px 10px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.2);border-radius:8px;color:#fb7185;font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap}
+
+/* Animated add div button in photo-mgmt title */
+.admin-card h3{display:flex;align-items:center}
+
+@media(max-width:700px){
+  .members-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .mc-photo{height:120px}
+  .ml-badge,.ml-position,.ml-angkatan{display:none}
+  .members-stats-row{grid-template-columns:1fr 1fr}
+  .members-toolbar input{width:150px}
+}
+
+
+#success-screen{min-height:100vh;align-items:center;justify-content:center;padding:24px}
+.success-box{text-align:center;max-width:480px;animation:fadeUp .5s ease both}
+.success-trophy{font-size:88px;margin-bottom:24px;animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s both;display:block}
+.success-box h2{font-family:'Clash Display',sans-serif;font-size:36px;font-weight:700;margin-bottom:12px}
+.success-box p{color:var(--text2);font-size:15px;margin-bottom:32px;line-height:1.7}
+.success-box p b{color:var(--cyan)}
+.btn-see-results{padding:14px 40px;background:transparent;border:1px solid var(--blue-lt);border-radius:var(--r2);color:var(--blue-lt);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Clash Display',sans-serif}
+.btn-see-results:hover{background:rgba(59,130,246,.1)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r2);padding:36px 32px;max-width:420px;width:100%;animation:pop .3s ease both;text-align:center}
+.modal-box .mo-icon{font-size:48px;margin-bottom:16px;display:block}
+.modal-box h3{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;margin-bottom:10px}
+.modal-box p{color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:28px}
+.modal-btns{display:flex;gap:10px}
+.btn-modal-cancel{flex:1;padding:12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:14px;cursor:pointer;transition:all .2s}
+.btn-modal-cancel:hover{color:var(--text)}
+.btn-modal-confirm{flex:1;padding:12px;border:none;border-radius:var(--r);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-modal-confirm:hover{opacity:.85}
+#confirm-modal .btn-modal-confirm{background:linear-gradient(135deg,var(--blue),var(--cyan))}
+#reset-modal .btn-modal-confirm,#del-user-modal .btn-modal-confirm{background:linear-gradient(135deg,var(--rose),#fb7185)}
+
+/* Spinner / toast / loading */
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-screen p{color:var(--text2);font-size:14px}
+.toast{position:fixed;bottom:24px;right:24px;z-index:300;background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:14px 20px;font-size:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.toast-success{border-left:3px solid var(--green)}
+.toast.toast-error{border-left:3px solid var(--rose)}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes confettiDrop{0%{transform:translateY(-60px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.confetti-bit{position:fixed;pointer-events:none;z-index:999;border-radius:2px;animation:confettiDrop linear forwards}
+
+@media(max-width:700px){
+  .nav-tabs .nav-tab span{display:none}
+  .nav-tab{padding:7px 11px}
+  .user-name{display:none}
+  .bc-row{grid-template-columns:40px 1fr 60px;gap:10px}
+  .bc-label{display:none}
+  .divisions-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+<div class="noise"></div>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="spinner" style="width:36px;height:36px;border-width:3px"></div>
+  <p>Menghubungkan ke server...</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="login-screen" class="screen">
+  <div class="login-wrap">
+    <div class="login-header">
+      <div class="login-logo-mark">
+        <div class="logo-icon">
+        <img src="logoHMIFputihJpg.jpg" alt="Logo">
+        </div>
+        <span>HMIF UMBANDUNG</span>
+      </div>
+      <h1>Selamat Datang<br>di HMIF UMBANDUNG VOTE</h1>
+      <p>Platform voting divisi terbaik bulan ini<br>Teknik Informatika</p>
+    </div>
+    <div class="login-card">
+      <div class="alert alert-error" id="login-error"></div>
+      <div class="field"><label>NIM / Username</label><input type="text" id="inp-nim" placeholder="Masukkan NIM kamu" autocomplete="username"></div>
+      <div class="field"><label>Password</label><input type="password" id="inp-pass" placeholder="Masukkan password" autocomplete="current-password"></div>
+      <button class="btn-main" id="btn-login" onclick="doLogin()">Masuk ke HIMA Vote →</button>
+    </div>
+    <div class="login-hint">
+     
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app-screen" class="screen">
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <div class="nav-logo">
+  <img src="logoHMIFputihJpg.jpg" alt="Logo">
+</div>
+        <div class="nav-title"> <span>HMIF</span> UMB Vote</div>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="vote" onclick="switchTab('vote')">🗳️ <span>Vote</span></button>
+        <button class="nav-tab" data-tab="results" onclick="switchTab('results')">📊 <span>Hasil</span></button>
+        <button class="nav-tab" data-tab="vote-member" onclick="switchTab('vote-member')">⭐ <span>Anggota</span></button>
+        <button class="nav-tab" data-tab="members" onclick="switchTab('members')">👥 <span>Anggota</span></button>
+        <button class="nav-tab admin-tab" data-tab="admin" onclick="switchTab('admin')">⚙️ <span>Admin</span></button>
+      </div>
+      <div class="nav-right">
+        <div class="user-chip">
+          <div class="user-ava" id="nav-ava">H</div>
+          <span class="user-name" id="nav-name">—</span>
+        </div>
+        <button class="btn-logout" onclick="doLogout()">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- VOTE TAB -->
+  <div class="tab-panel active" id="tab-vote">
+    <div class="page-wrap">
+      <div class="vote-hero">
+        <div class="period-pill">🗓️ Periode: <span id="period-label">—</span></div>
+        <h1>Pilih <span class="grad">Divisi Terbaik</span><br>Bulan Ini</h1>
+        <p>Berikan suaramu untuk divisi yang paling berprestasi. Satu akun hanya bisa memberikan satu suara.</p>
+      </div>
+      <div class="voted-alert" id="voted-alert">
+        <span class="va-icon">✅</span>
+        <div class="va-text">
+          <strong>Kamu sudah memberikan suaramu!</strong>
+          <span>Suaramu untuk <b id="voted-for-name">—</b> telah tercatat. Terima kasih!</span>
+        </div>
+      </div>
+      <div class="divisions-grid" id="divisions-grid"></div>
+      <div class="vote-submit" id="vote-submit">
+        <button class="btn-vote" id="btn-vote" disabled onclick="openConfirmModal()">Kirim Suara &nbsp;→</button>
+        <span class="vote-hint" id="vote-hint">Pilih salah satu divisi terlebih dahulu</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS TAB -->
+  <div class="tab-panel" id="tab-results">
+    <div class="page-wrap">
+      <div class="results-header">
+        <div><h2>📊 Hasil Voting</h2><p id="results-sub">Memuat data...</p></div>
+        <div class="period-pill">🗓️ <span id="results-period">—</span></div>
+      </div>
+      <div class="stats-row" id="stats-row"></div>
+      <div style="margin-bottom:44px">
+        <div class="section-title">🏆 Podium <span class="badge">Top 3</span></div>
+        <div class="podium" id="podium"></div>
+      </div>
+      <div class="section-title">📈 Perolehan Suara <span class="badge" id="total-votes-badge">0 suara</span></div>
+      <div class="bar-chart" id="bar-chart"></div>
+    </div>
+  </div>
+
+  <!-- VOTE ANGGOTA TAB -->
+  <div class="tab-panel" id="tab-vote-member">
+    <div class="page-wrap">
+      <div class="vote-hero">
+        <div class="period-pill">🗓️ Periode: <span id="vm-period-label">—</span></div>
+        <h1>Pilih <span class="grad">Anggota Terbaik</span><br>Bulan Ini</h1>
+        <p>Berikan suaramu untuk anggota yang paling berprestasi dan aktif. Satu akun satu suara per periode.</p>
+      </div>
+      <div class="vote-member-voted-alert" id="vm-voted-alert">
+        <span style="font-size:28px">⭐</span>
+        <div>
+          <strong>Kamu sudah memilih anggota!</strong><br>
+          <span>Suaramu untuk <b id="vm-voted-for-name" style="color:var(--amber)">—</b> telah tercatat. Terima kasih!</span>
+        </div>
+      </div>
+      <div class="vm-filter-bar">
+        <input type="text" id="vm-search" placeholder="🔍 Cari nama anggota..." oninput="filterMemberVoteCards()">
+        <select id="vm-filter-div" onchange="filterMemberVoteCards()">
+          <option value="">Semua Divisi</option>
+        </select>
+        <span class="vm-count-label" id="vm-count-label">— anggota</span>
+      </div>
+      <div class="member-vote-grid" id="member-vote-grid"></div>
+      <div class="vote-submit" id="vm-vote-submit">
+        <button class="btn-vote" id="btn-vm-vote" disabled onclick="openVmConfirmModal()" style="background:linear-gradient(135deg,#f59e0b,#ef4444);box-shadow:0 10px 30px rgba(245,158,11,.35)">Kirim Suara Anggota &nbsp;→</button>
+        <span class="vote-hint" id="vm-vote-hint">Pilih salah satu anggota terlebih dahulu</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEMBERS TAB -->
+  <div class="tab-panel" id="tab-members">
+    <div class="page-wrap">
+
+      <!-- Hero -->
+      <div class="vote-hero" style="margin-bottom:28px">
+        <h1 style="font-size:clamp(24px,4vw,40px)">👥 Anggota <span class="grad">Himpunan</span></h1>
+        <p>Kenali seluruh anggota HIMA Teknik Informatika</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="members-stats-row" id="members-stats-row"></div>
+
+      <!-- Toolbar -->
+      <div class="members-toolbar">
+        <div class="members-toolbar-left">
+          <input type="text" id="member-search" placeholder="🔍 Cari nama / NIM..." oninput="filterMembers()">
+          <select id="member-filter-div" onchange="filterMembers()">
+            <option value="">Semua Divisi</option>
+          </select>
+          <select id="member-filter-angkatan" onchange="filterMembers()">
+            <option value="">Semua Angkatan</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span id="members-count-label" style="font-size:12px;color:var(--text2)"></span>
+          <div class="view-toggle">
+            <button class="view-btn active" id="vbtn-card"  onclick="setMembersView('card')" title="Kartu">⊞</button>
+            <button class="view-btn"        id="vbtn-divisi" onclick="setMembersView('divisi')" title="Per Divisi">🏢</button>
+            <button class="view-btn"        id="vbtn-list"  onclick="setMembersView('list')" title="Daftar">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content area (swapped by view mode) -->
+      <div id="members-content"></div>
+
+    </div>
+  </div>
+
+  <!-- ADMIN TAB -->
+  <div class="tab-panel" id="tab-admin">
+    <div class="page-wrap">
+      <div class="results-header">
+        <div><h2>⚙️ Panel Admin</h2><p>Kelola akun, foto divisi, pantau aktivitas, atur periode</p></div>
+      </div>
+      <div class="admin-grid">
+
+        <!-- Foto Divisi + Tambah/Hapus -->
+        <div class="admin-card" style="grid-column:1/-1">
+          <h3 style="justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <span><span class="ac-icon" style="background:rgba(6,182,212,.15)">🏢</span> Manajemen Divisi</span>
+            <button onclick="openModal('add-div-modal')" style="background:linear-gradient(135deg,#22c55e,#06b6d4);border:none;border-radius:10px;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Tambah Divisi</button>
+          </h3>
+          <div class="photo-mgmt-list" id="photo-mgmt-list"></div>
+        </div>
+
+        <!-- Kelola Anggota -->
+        <div class="admin-card" style="grid-column:1/-1">
+          <h3 style="justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <span><span class="ac-icon" style="background:rgba(6,182,212,.15)">👥</span> Kelola Anggota Himpunan</span>
+            <button onclick="openAddMemberModal()" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);border:none;border-radius:10px;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Tambah Anggota</button>
+          </h3>
+          <div style="overflow-x:auto">
+            <table class="user-table">
+              <thead><tr><th>Foto</th><th>Nama / NIM</th><th>Divisi</th><th>Jabatan</th><th>Angkatan</th><th>Kontak</th><th>Aksi</th></tr></thead>
+              <tbody id="member-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- User table -->
+        <div class="admin-card" style="grid-column:1/-1">
+          <h3><span class="ac-icon" style="background:rgba(37,99,235,.15)">👥</span> Daftar Akun</h3>
+          <div style="overflow-x:auto">
+            <table class="user-table">
+              <thead><tr><th>Username</th><th>Role</th><th>Status Vote</th><th>Pilihan</th><th>Aksi</th></tr></thead>
+              <tbody id="user-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add user -->
+        <div class="admin-card">
+          <h3><span class="ac-icon" style="background:rgba(34,197,94,.15)">➕</span> Tambah Akun</h3>
+          <div class="add-user-form">
+            <div class="row">
+              <div class="field"><label>Username / NIM</label><input type="text" id="new-username" placeholder="hima11"></div>
+              <div class="field"><label>Password</label><input type="password" id="new-password" placeholder="password"></div>
+            </div>
+            <div class="field"><label>Role</label>
+              <select id="new-role"><option value="voter">Voter</option><option value="admin">Admin</option></select>
+            </div>
+            <button class="btn-add" onclick="addUser()">+ Tambah Akun</button>
+          </div>
+        </div>
+
+        <!-- Periode -->
+        <div class="admin-card">
+          <h3><span class="ac-icon" style="background:rgba(245,158,11,.15)">📅</span> Periode Voting</h3>
+          <div class="period-form">
+            <div class="field"><label>Bulan</label>
+              <select id="period-month">
+                <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+                <option value="4" selected>April</option><option value="5">Mei</option><option value="6">Juni</option>
+                <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+                <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+              </select>
+            </div>
+            <div class="field"><label>Tahun</label><input type="number" id="period-year" value="2025" min="2020" max="2099"></div>
+            <button class="btn-add" onclick="savePeriod()">Simpan Periode</button>
+          </div>
+        </div>
+
+        <!-- Export -->
+        <div class="admin-card">
+          <h3><span class="ac-icon" style="background:rgba(34,197,94,.15)">📤</span> Export Data</h3>
+          <button class="btn-export" onclick="exportCSV()">📊 Export CSV</button>
+          <button class="btn-export-pdf" onclick="exportPDF()">📄 Export Laporan PDF</button>
+          <p style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.6">CSV berisi data mentah.<br>PDF berisi laporan lengkap dengan statistik.</p>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="admin-card">
+          <h3><span class="ac-icon" style="background:rgba(244,63,94,.15)">⚠️</span> Zona Berbahaya</h3>
+          <button class="btn-danger" onclick="openModal('reset-modal')">🔄 Reset Vote Divisi</button>
+          <button class="btn-danger" onclick="openModal('reset-member-modal')" style="margin-top:8px">🔄 Reset Vote Anggota</button>
+          <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-top:10px">Reset menghapus seluruh data voting periode aktif. Tidak bisa dibatalkan.</p>
+        </div>
+
+        <!-- Log -->
+        <div class="admin-card" style="grid-column:1/-1">
+          <h3><span class="ac-icon" style="background:rgba(168,85,247,.15)">📋</span> Log Aktivitas</h3>
+          <div class="admin-log" id="admin-log"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUCCESS ══ -->
+<div id="success-screen" class="screen">
+  <div class="success-box">
+    <span class="success-trophy" id="success-icon">🏆</span>
+    <h2 id="success-title">Suara Terkirim!</h2>
+    <p>Suaramu untuk <b id="success-div-name" style="color:var(--cyan)">—</b> telah berhasil dicatat.<br>Terima kasih telah berpartisipasi dalam voting HIMA TI!</p>
+    <button class="btn-see-results" id="success-results-btn" onclick="gotoResults()">Lihat Hasil Sementara →</button>
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal-box">
+    <span class="mo-icon">🗳️</span>
+    <h3>Konfirmasi Vote</h3>
+    <p>Kamu akan memberikan suara untuk<br><b id="confirm-div-name" style="color:var(--cyan)">—</b>.<br><br>Ingat, kamu hanya bisa vote <b>satu kali</b>. Lanjutkan?</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('confirm-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmVote()">Ya, Kirim Suara</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="vm-confirm-modal">
+  <div class="modal-box">
+    <span class="mo-icon">⭐</span>
+    <h3>Konfirmasi Vote Anggota</h3>
+    <p>Kamu akan memberikan suara untuk<br><b id="vm-confirm-name" style="color:var(--amber)">—</b>.<br><br>Ingat, kamu hanya bisa vote <b>satu kali</b>. Lanjutkan?</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('vm-confirm-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmMemberVote()" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">Ya, Kirim Suara</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal-box">
+    <span class="mo-icon">⚠️</span>
+    <h3>Reset Semua Vote?</h3>
+    <p>Tindakan ini akan menghapus <b>seluruh data voting</b> periode aktif dan tidak bisa dibatalkan.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('reset-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmReset()">Ya, Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reset-member-modal">
+  <div class="modal-box">
+    <span class="mo-icon">⚠️</span>
+    <h3>Reset Vote Anggota?</h3>
+    <p>Tindakan ini akan menghapus <b>seluruh data voting anggota</b> periode aktif dan tidak bisa dibatalkan.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('reset-member-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmResetMemberVotes()">Ya, Reset</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="del-user-modal">
+  <div class="modal-box">
+    <span class="mo-icon">🗑️</span>
+    <h3>Hapus Akun?</h3>
+    <p>Akun <b id="del-user-name" style="color:var(--rose)">—</b> akan dihapus permanen beserta data votingnya.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('del-user-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmDeleteUser()">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Divisi -->
+<div class="modal-overlay" id="add-div-modal">
+  <div class="modal-box" style="max-width:500px;text-align:left">
+    <span class="mo-icon" style="display:block;text-align:center">🏢</span>
+    <h3 style="text-align:center;margin-bottom:20px">Tambah Divisi Baru</h3>
+    <div class="edit-div-fields">
+      <div style="display:flex;gap:10px">
+        <div class="field" style="flex:0 0 80px">
+          <label>Icon</label>
+          <input type="text" id="adiv-icon" placeholder="📌" maxlength="4" value="📌">
+        </div>
+        <div class="field" style="flex:1">
+          <label>Nama Divisi *</label>
+          <input type="text" id="adiv-name" placeholder="Contoh: Divisi Kaderisasi">
+        </div>
+      </div>
+      <div class="field">
+        <label>Deskripsi</label>
+        <textarea id="adiv-desc" placeholder="Deskripsi singkat tentang divisi ini..." style="min-height:80px"></textarea>
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn-modal-cancel" onclick="closeModal('add-div-modal')">Batal</button>
+      <button class="btn-modal-confirm" id="btn-save-adiv" onclick="confirmAddDiv()" style="background:linear-gradient(135deg,#22c55e,#16a34a)">Tambah Divisi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus Divisi -->
+<div class="modal-overlay" id="del-div-modal">
+  <div class="modal-box">
+    <span class="mo-icon">⚠️</span>
+    <h3>Hapus Divisi?</h3>
+    <p>Divisi <b id="del-div-name" style="color:var(--rose)">—</b> akan dihapus permanen beserta data votingnya.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('del-div-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmDeleteDiv()" style="background:linear-gradient(135deg,var(--rose),#fb7185)">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah / Edit Anggota -->
+<div class="modal-overlay" id="member-modal">
+  <div class="modal-box" style="max-width:560px;text-align:left;max-height:90vh;overflow-y:auto">
+    <span class="mo-icon" id="member-modal-icon" style="display:block;text-align:center">👤</span>
+    <h3 id="member-modal-title" style="text-align:center;margin-bottom:20px">Tambah Anggota</h3>
+    <input type="hidden" id="member-id">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:10px">
+        <div class="field" style="flex:1"><label>Nama Lengkap *</label><input type="text" id="m-name" placeholder="Nama lengkap anggota"></div>
+        <div class="field" style="flex:0 0 140px"><label>NIM *</label><input type="text" id="m-nim" placeholder="2200001234"></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div class="field" style="flex:1">
+          <label>Divisi</label>
+          <select id="m-division" style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:13px 16px;color:var(--text);font-size:15px;outline:none">
+            <option value="">— Tanpa Divisi —</option>
+          </select>
+        </div>
+        <div class="field" style="flex:1"><label>Jabatan</label><input type="text" id="m-position" placeholder="Anggota / Ketua / ..."></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div class="field" style="flex:1"><label>Angkatan</label><input type="number" id="m-angkatan" placeholder="2023" min="2000" max="2099"></div>
+        <div class="field" style="flex:1"><label>Email</label><input type="email" id="m-email" placeholder="email@example.com"></div>
+      </div>
+      <div class="field"><label>No. HP / WhatsApp</label><input type="text" id="m-phone" placeholder="08xxxxxxxxxx"></div>
+      <div class="field"><label>Bio Singkat</label><textarea id="m-bio" placeholder="Deskripsi singkat tentang anggota ini..." style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:12px 16px;color:var(--text);font-size:14px;outline:none;resize:vertical;min-height:72px"></textarea></div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn-modal-cancel" onclick="closeModal('member-modal')">Batal</button>
+      <button class="btn-modal-confirm" id="btn-save-member" onclick="confirmSaveMember()" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Hapus Anggota -->
+<div class="modal-overlay" id="del-member-modal">
+  <div class="modal-box">
+    <span class="mo-icon">🗑️</span>
+    <h3>Hapus Anggota?</h3>
+    <p>Data anggota <b id="del-member-name" style="color:var(--rose)">—</b> akan dihapus permanen.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('del-member-modal')">Batal</button>
+      <button class="btn-modal-confirm" onclick="confirmDeleteMember()" style="background:linear-gradient(135deg,var(--rose),#fb7185)">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail / Profil Anggota -->
+<div class="modal-overlay" id="member-detail-modal">
+  <div class="profile-modal-box">
+    <div id="member-detail-content"></div>
+    <div style="padding:0 28px 24px">
+      <button class="btn-modal-cancel" style="width:100%;padding:11px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:14px;cursor:pointer" onclick="closeModal('member-detail-modal')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DRAG-DROP UPLOAD MODAL ─── -->
+<div class="modal-overlay" id="photo-upload-modal">
+  <div class="photo-upload-modal-box">
+    <div class="photo-upload-title" id="pum-title">Upload Foto</div>
+    <div class="photo-upload-subtitle" id="pum-subtitle">Pilih atau drag &amp; drop gambar di sini</div>
+    <div class="photo-dropzone" id="pum-dropzone">
+      <input type="file" accept="image/*" id="pum-file-input" onchange="pumFileSelected(this)">
+      <div class="photo-dropzone-icon">📸</div>
+      <div class="photo-dropzone-label">Klik atau drag foto ke sini</div>
+      <div class="photo-dropzone-hint">JPG, PNG, WebP · Maks 5MB</div>
+    </div>
+    <div class="photo-preview-wrap" id="pum-preview-wrap">
+      <img id="pum-preview-img" src="" alt="Preview">
+      <button class="photo-preview-clear" onclick="pumClearPreview()" title="Hapus pilihan">✕</button>
+    </div>
+    <div class="photo-upload-progress" id="pum-progress">
+      <div class="photo-upload-progress-bar" id="pum-progress-bar"></div>
+    </div>
+    <div class="photo-upload-actions">
+      <button class="btn-upload-cancel" onclick="closeModal('photo-upload-modal')">Batal</button>
+      <button class="btn-upload-confirm" id="pum-confirm-btn" disabled onclick="pumConfirmUpload()">Upload Foto</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="edit-div-modal">
+  <div class="modal-box" style="max-width:480px">
+    <span class="mo-icon">✏️</span>
+    <h3>Edit Divisi</h3>
+    <div class="edit-div-fields">
+      <div class="field">
+        <label>Icon (emoji)</label>
+        <input type="text" id="edit-div-icon" placeholder="🌐" maxlength="4">
+      </div>
+      <div class="field">
+        <label>Nama Divisi</label>
+        <input type="text" id="edit-div-name" placeholder="Nama divisi...">
+      </div>
+      <div class="field">
+        <label>Deskripsi</label>
+        <textarea id="edit-div-desc" placeholder="Deskripsi singkat divisi..."></textarea>
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:24px">
+      <button class="btn-modal-cancel" onclick="closeModal('edit-div-modal')">Batal</button>
+      <button class="btn-modal-confirm" id="btn-save-div" onclick="confirmEditDiv()" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════
+// STATE
+// ════════════════════════════
+let currentUser = null, selectedDivId = null, selectedDivName = '';
+let pendingDeleteUserId = null, cachedDivisions = [], cachedMembers = [];
+let editingDivId = null, pendingDeleteDivId = null;
+let editingMemberId = null, pendingDeleteMemberId = null;
+
+// ════════════════════════════
+// API HELPER
+// ════════════════════════════
+async function api(method, path, body) {
+  const opts = { method, credentials: 'include', headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch('/api' + path, opts);
+  return res.json();
+}
+
+// ════════════════════════════
+// TOAST
+// ════════════════════════════
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast toast-${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ════════════════════════════
+// INIT
+// ════════════════════════════
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const data = await api('GET', '/auth/me');
+    if (data.success) { currentUser = data.user; enterApp(); }
+    else switchScreen('login-screen');
+  } catch { switchScreen('login-screen'); }
+  finally { document.getElementById('loading-screen').style.display = 'none'; }
+});
+
+// ════════════════════════════
+// LOGIN / LOGOUT
+// ════════════════════════════
+document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+document.getElementById('inp-nim').addEventListener('keydown',  e => { if (e.key==='Enter') document.getElementById('inp-pass').focus(); });
+
+async function doLogin() {
+  const username = document.getElementById('inp-nim').value.trim();
+  const password = document.getElementById('inp-pass').value;
+  const errEl = document.getElementById('login-error');
+  const btnEl = document.getElementById('btn-login');
+  errEl.classList.remove('show');
+  if (!username || !password) { errEl.textContent='⚠️ NIM dan password wajib diisi.'; errEl.classList.add('show'); return; }
+  btnEl.disabled = true; btnEl.innerHTML = '<span class="spinner"></span> Masuk...';
+  try {
+    const data = await api('POST', '/auth/login', { username, password });
+    if (!data.success) { errEl.textContent = '⚠️ ' + data.message; errEl.classList.add('show'); }
+    else { currentUser = data.user; enterApp(); }
+  } catch { errEl.textContent = '⚠️ Gagal terhubung ke server.'; errEl.classList.add('show'); }
+  finally { btnEl.disabled=false; btnEl.textContent='Masuk ke HIMA Vote →'; }
+}
+
+async function doLogout() {
+  await api('POST', '/auth/logout').catch(()=>{});
+  currentUser=null; selectedDivId=null; cachedDivisions=[];
+  document.getElementById('inp-nim').value='';
+  document.getElementById('inp-pass').value='';
+  document.getElementById('login-error').classList.remove('show');
+  switchScreen('login-screen');
+}
+
+function enterApp() {
+  document.getElementById('nav-name').textContent = currentUser.username;
+  document.getElementById('nav-ava').textContent  = currentUser.username[0].toUpperCase();
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('show', currentUser.role==='admin'));
+  window._currentRole = currentUser.role; // expose role globally for card views
+  switchScreen('app-screen');
+  switchTab('vote');
+  renderVoteTab();
+}
+
+// ════════════════════════════
+// SCREENS & TABS
+// ════════════════════════════
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+  if (id==='results') renderResultsTab();
+  if (id==='admin')   renderAdminTab();
+  if (id==='members') renderMembersTab();
+  if (id==='vote-member') renderVoteMemberTab();
+}
+
+// ════════════════════════════
+// PHOTO HELPER
+// ════════════════════════════
+function photoEl(photo_url, icon, size=180) {
+  if (photo_url) {
+    return `<img src="${photo_url}?t=${Date.now()}" alt="foto" onerror="this.parentElement.innerHTML='<div class=\\'dc-photo-placeholder\\'><span class=\\'ph-icon\\'>${icon}</span><span>Foto tidak tersedia</span></div>'">`;
+  }
+  return `<div class="dc-photo-placeholder"><span class="ph-icon">${icon}</span><span>Belum ada foto</span></div>`;
+}
+
+// ════════════════════════════
+// VOTE TAB
+// ════════════════════════════
+async function renderVoteTab() {
+  const grid = document.getElementById('divisions-grid');
+  grid.innerHTML = '<div style="color:var(--text2);font-size:14px;text-align:center;padding:60px;grid-column:1/-1"><div class="spinner" style="margin:0 auto 12px"></div>Memuat divisi...</div>';
+  try {
+    const [divRes, periodRes, statusRes] = await Promise.all([
+      api('GET','/divisions'), api('GET','/period/active'), api('GET','/votes/status')
+    ]);
+    cachedDivisions = divRes.data || [];
+    const period  = periodRes.data;
+    const hasVoted = statusRes.hasVoted;
+    const voteInfo = statusRes.voteInfo;
+
+    document.getElementById('period-label').textContent = period ? period.label : '—';
+
+    const alertEl = document.getElementById('voted-alert');
+    if (hasVoted) {
+      document.getElementById('voted-for-name').textContent = `${voteInfo.icon} ${voteInfo.division_name}`;
+      alertEl.classList.add('show');
+      document.getElementById('vote-submit').style.display = 'none';
+    } else {
+      alertEl.classList.remove('show');
+      document.getElementById('vote-submit').style.display = 'flex';
+    }
+
+    let votes = {}, total = 0;
+    if (hasVoted) {
+      const r = await api('GET','/votes/results');
+      (r.data||[]).forEach(d => { votes[d.id]=parseInt(d.vote_count); total+=parseInt(d.vote_count); });
+    }
+
+    grid.innerHTML = '';
+    cachedDivisions.forEach((div, i) => {
+      const count   = votes[div.id] || 0;
+      const pct     = total > 0 ? Math.round(count/total*100) : 0;
+      const isMaxV  = hasVoted && total>0 && count===Math.max(...Object.values(votes));
+      const isWinner = isMaxV && count>0;
+      const isMyVote = hasVoted && voteInfo?.slug===div.slug;
+
+      const card = document.createElement('div');
+      card.className = 'div-card' + (hasVoted?' disabled':'') + (isMyVote?' selected':'');
+      card.style.animationDelay = (i*0.08)+'s';
+      if (!hasVoted) card.onclick = () => selectDiv(div.id, div.name);
+
+      card.innerHTML = `
+        ${isWinner ? '<span class="winner-tag">🏆 Unggul</span>' : ''}
+        <div class="dc-photo">${photoEl(div.photo_url, div.icon)}
+          <div class="dc-photo-gradient"></div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-top-row">
+            <div class="dc-icon-badge" style="background:${div.color}">${div.icon}</div>
+            ${!hasVoted ? '<div class="dc-radio"></div>' : ''}
+          </div>
+          <div class="dc-name">${div.name}</div>
+          <div class="dc-desc">${div.description}</div>
+          ${isMyVote ? '<div class="my-vote-tag">✓ Pilihanmu</div>' : ''}
+          ${hasVoted ? `
+            <div class="dc-bar-wrap">
+              <div class="dc-bar-row"><span>Perolehan suara</span><b>${count} suara (${pct}%)</b></div>
+              <div class="dc-bar"><div class="dc-bar-fill" data-pct="${pct}" style="background:${div.fill};width:0%"></div></div>
+            </div>` : ''}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    setTimeout(() => {
+      document.querySelectorAll('.dc-bar-fill').forEach(el => { el.style.width = el.dataset.pct+'%'; });
+    }, 100);
+
+  } catch (err) {
+    grid.innerHTML = '<div style="color:var(--rose);font-size:14px;text-align:center;padding:60px;grid-column:1/-1">❌ Gagal memuat data. Pastikan server berjalan.</div>';
+  }
+}
+
+function selectDiv(id, name) {
+  selectedDivId=id; selectedDivName=name;
+  document.querySelectorAll('.div-card').forEach(c=>c.classList.remove('selected'));
+  const idx = cachedDivisions.findIndex(d=>d.id===id);
+  document.querySelectorAll('.div-card')[idx]?.classList.add('selected');
+  document.getElementById('btn-vote').disabled = false;
+  document.getElementById('vote-hint').textContent = `Kamu memilih: ${name}`;
+}
+
+// ════════════════════════════
+// VOTE SUBMIT
+// ════════════════════════════
+function openConfirmModal() {
+  if (!selectedDivId) return;
+  document.getElementById('confirm-div-name').textContent = selectedDivName;
+  openModal('confirm-modal');
+}
+
+async function confirmVote() {
+  closeModal('confirm-modal');
+  const btn = document.getElementById('btn-vote');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+  try {
+    const data = await api('POST','/votes',{division_id:selectedDivId});
+    if (!data.success) { showToast('❌ '+data.message,'error'); btn.disabled=false; btn.textContent='Kirim Suara →'; return; }
+    showSuccessScreen('division');
+  } catch { showToast('❌ Gagal mengirim suara.','error'); btn.disabled=false; btn.textContent='Kirim Suara →'; }
+}
+
+function gotoResults() {
+  switchScreen('app-screen');
+  const btn = document.getElementById('success-results-btn');
+  if (btn && btn.dataset.mode === 'member') switchTab('vote-member');
+  else switchTab('results');
+}
+
+function showSuccessScreen(mode) {
+  const icon  = document.getElementById('success-icon');
+  const title = document.getElementById('success-title');
+  const name  = document.getElementById('success-div-name');
+  const btn   = document.getElementById('success-results-btn');
+  if (mode === 'member') {
+    icon.textContent  = '⭐';
+    title.textContent = 'Suara Anggota Terkirim!';
+    name.style.color  = 'var(--amber)';
+    name.textContent  = selectedMemberName || '—';
+    btn.textContent   = 'Lihat Hasil Vote Anggota →';
+    btn.dataset.mode  = 'member';
+  } else {
+    icon.textContent  = '🏆';
+    title.textContent = 'Suara Terkirim!';
+    name.style.color  = 'var(--cyan)';
+    name.textContent  = selectedDivName || '—';
+    btn.textContent   = 'Lihat Hasil Sementara →';
+    btn.dataset.mode  = 'division';
+  }
+  spawnConfetti();
+  switchScreen('success-screen');
+}
+
+// ════════════════════════════
+// RESULTS TAB
+// ════════════════════════════
+async function renderResultsTab() {
+  try {
+    const r = await api('GET','/votes/results');
+    const { data, period, totalVotes } = r;
+    document.getElementById('results-period').textContent = period ? period.label : '—';
+    const sorted = [...(data||[])].sort((a,b)=>b.vote_count-a.vote_count);
+    const maxV   = sorted[0]?.vote_count||0;
+    const leader = maxV>0 ? sorted[0].name : '—';
+
+    document.getElementById('stats-row').innerHTML = `
+      <div class="stat-card blue"><div class="sc-label">Total Suara</div><div class="sc-value">${totalVotes}</div><div class="sc-sub">suara masuk</div></div>
+      <div class="stat-card green"><div class="sc-label">Total Divisi</div><div class="sc-value">${data.length}</div><div class="sc-sub">divisi bersaing</div></div>
+      <div class="stat-card cyan"><div class="sc-label">Terbanyak</div><div class="sc-value">${maxV}</div><div class="sc-sub">suara</div></div>
+      <div class="stat-card amber"><div class="sc-label">Unggul Sementara</div><div class="sc-value">${leader}</div></div>
+    `;
+
+    // Podium with photos
+    const podium = document.getElementById('podium');
+    podium.innerHTML = '';
+    sorted.slice(0,3).forEach((div,i)=>{
+      const rank=i+1, count=parseInt(div.vote_count);
+      const pct = totalVotes>0 ? Math.round(count/totalVotes*100) : 0;
+      const medal=['🥇','🥈','🥉'][i];
+      const phHtml = div.photo_url
+        ? `<img src="${div.photo_url}?t=${Date.now()}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : '';
+      const el=document.createElement('div');
+      el.className=`podium-item rank-${rank}`;
+      el.style.animationDelay=(i*0.1)+'s';
+      el.innerHTML=`
+        <div class="podium-photo">
+          ${phHtml}
+          <div class="podium-photo-placeholder" style="${div.photo_url?'display:none':''}">
+            ${div.icon}
+          </div>
+        </div>
+        <div class="podium-name">${div.name}</div>
+        <div class="podium-votes">${count} suara</div>
+        <div class="podium-pct" style="color:${rank===1?'var(--amber)':rank===2?'#94a3b8':'#cd7c3a'}">${pct}%</div>
+        <div class="podium-block">${medal}</div>
+      `;
+      podium.appendChild(el);
+    });
+
+    // Bar chart with photos
+    const chart=document.getElementById('bar-chart');
+    chart.innerHTML='';
+    document.getElementById('total-votes-badge').textContent=totalVotes+' suara';
+    sorted.forEach((div,i)=>{
+      const count=parseInt(div.vote_count);
+      const pct=totalVotes>0?Math.round(count/totalVotes*100):0;
+      const row=document.createElement('div');
+      row.className='bc-row'; row.style.animationDelay=(i*0.07)+'s';
+      row.innerHTML=`
+        <div class="bc-avatar">
+          ${div.photo_url
+            ? `<img src="${div.photo_url}?t=${Date.now()}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="bc-avatar-ph" style="display:none">${div.icon}</div>`
+            : `<div class="bc-avatar-ph">${div.icon}</div>`}
+        </div>
+        <div class="bc-label">${div.name}<small>${div.icon}</small></div>
+        <div class="bc-track"><div class="bc-fill" data-pct="${pct}" style="background:${div.fill};width:0%"></div></div>
+        <div class="bc-num">${count} <span style="color:var(--text2);font-size:11px">(${pct}%)</span></div>
+      `;
+      chart.appendChild(row);
+    });
+    setTimeout(()=>{ document.querySelectorAll('.bc-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';}); },100);
+    document.getElementById('results-sub').textContent=`Terakhir diperbarui: ${new Date().toLocaleString('id-ID')}`;
+  } catch { document.getElementById('results-sub').textContent='❌ Gagal memuat data.'; }
+}
+
+// ════════════════════════════
+// ADMIN TAB
+// ════════════════════════════
+async function renderAdminTab() {
+  try {
+    const [usersRes, logsRes, periodRes, divRes, memberRes] = await Promise.all([
+      api('GET','/admin/users'), api('GET','/admin/logs'),
+      api('GET','/period/active'), api('GET','/divisions'),
+      api('GET','/members')
+    ]);
+
+    cachedDivisions = divRes.data || [];
+    cachedMembers   = memberRes.data || [];
+
+    if (periodRes.data) {
+      document.getElementById('period-month').value = periodRes.data.month;
+      document.getElementById('period-year').value  = periodRes.data.year;
+    }
+
+    // Photo management + Edit + Hapus divisi
+    const photoList = document.getElementById('photo-mgmt-list');
+    photoList.innerHTML = '';
+    cachedDivisions.forEach(div => {
+      const item = document.createElement('div');
+      item.className = 'photo-mgmt-item';
+      item.id = `pmi-${div.id}`;
+      item.style.flexWrap = 'wrap';
+      item.innerHTML = `
+        <div class="pmi-thumb">
+          ${div.photo_url
+            ? `<img src="${div.photo_url}?t=${Date.now()}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="pmi-thumb-ph" style="display:none">${div.icon}</div>`
+            : `<div class="pmi-thumb-ph">${div.icon}</div>`}
+        </div>
+        <div class="pmi-info">
+          <div class="pmi-name" id="pmi-divname-${div.id}">${div.icon} ${div.name}</div>
+          <div class="pmi-status" id="pmi-status-${div.id}">${div.photo_url ? '✅ Foto sudah ada' : '📷 Belum ada foto'}</div>
+          <div class="upload-progress" id="progress-${div.id}">
+            <div class="upload-progress-bar" id="progress-bar-${div.id}"></div>
+          </div>
+        </div>
+        <div class="pmi-actions">
+          <button class="btn-edit-div" onclick="openEditDiv(${div.id}, '${div.icon.replace(/'/g,"\'")}', '${div.name.replace(/'/g,"\'")}', '${(div.description||'').replace(/'/g,"\'").replace(/\n/g,' ')}')">✏️ Edit</button>
+          <label class="btn-upload-photo">
+            📷 ${div.photo_url?'Ganti':'Upload'}
+            <input type="file" accept="image/*" onchange="uploadPhoto(${div.id}, this)">
+          </label>
+          ${div.photo_url ? `<button class="btn-del-photo" onclick="deletePhoto(${div.id})">🗑️ Foto</button>` : ''}
+          <button class="pmi-del-btn" onclick="openDeleteDiv(${div.id},'${div.name.replace(/'/g,"\\'")}')">🗑️ Hapus</button>
+        </div>
+      `;
+      photoList.appendChild(item);
+    });
+
+    // Member table
+    const memberTbody = document.getElementById('member-tbody');
+    memberTbody.innerHTML = '';
+    if (!cachedMembers.length) {
+      memberTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text2);padding:24px">Belum ada anggota. Klik "+ Tambah Anggota".</td></tr>';
+    } else {
+      cachedMembers.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div style="width:38px;height:38px;border-radius:50%;overflow:hidden;background:var(--surface);flex-shrink:0">
+              ${m.photo_url
+                ? `<img src="${m.photo_url}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover">`
+                : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px">👤</div>`}
+            </div>
+          </td>
+          <td>
+            <div style="font-weight:600;font-size:13px">${m.name}</div>
+            <div style="font-size:11px;color:var(--text3)">${m.nim}</div>
+          </td>
+          <td style="font-size:12px;color:var(--text2)">${m.division_icon||''} ${m.division_name||'—'}</td>
+          <td style="font-size:12px;color:var(--cyan)">${m.position||'—'}</td>
+          <td style="font-size:12px;color:var(--text2)">${m.angkatan||'—'}</td>
+          <td style="font-size:12px;color:var(--text2)">${m.email||m.phone||'—'}</td>
+          <td>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+              <button onclick='openEditMemberModal(${JSON.stringify(m)})' style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:4px 9px;color:#c084fc;font-size:11px;cursor:pointer">✏️</button>
+              <label class="btn-member-photo">📷<input type="file" accept="image/*" onchange="uploadMemberPhoto(${m.id},this)"></label>
+              <button onclick="openDeleteMember(${m.id},'${m.name.replace(/'/g,"\\'")}'')" style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);border-radius:6px;padding:4px 9px;color:#fb7185;font-size:11px;cursor:pointer">🗑️</button>
+            </div>
+          </td>
+        `;
+        memberTbody.appendChild(tr);
+      });
+    }
+
+    // User table
+    const tbody = document.getElementById('user-tbody');
+    tbody.innerHTML='';
+    (usersRes.data||[]).forEach(u=>{
+      const isMe=u.username===currentUser.username;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td style="font-weight:600">${u.username}${isMe?' <span style="font-size:11px;color:var(--cyan)">(kamu)</span>':''}</td>
+        <td><span class="u-role ${u.role}">${u.role}</span></td>
+        <td><span class="voted-dot ${u.vote_id?'yes':'no'}"></span> ${u.vote_id?'Sudah':'Belum'}</td>
+        <td style="color:var(--text2);font-size:13px">${u.voted_icon||''} ${u.voted_division||'—'}</td>
+        <td>${(!isMe&&u.role!=='admin')
+          ?`<button onclick="openDeleteUser(${u.id},'${u.username}')" style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);border-radius:6px;padding:4px 10px;color:#fb7185;font-size:12px;cursor:pointer">Hapus</button>`
+          :'—'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Logs
+    const logEl=document.getElementById('admin-log');
+    logEl.innerHTML='';
+    const logs=logsRes.data||[];
+    if (!logs.length) {
+      logEl.innerHTML='<div class="log-entry"><span class="log-dot" style="background:var(--border2)"></span>Belum ada aktivitas.</div>';
+    } else {
+      logs.forEach(l=>{
+        const time=new Date(l.created_at).toLocaleTimeString('id-ID');
+        const el=document.createElement('div');
+        el.className='log-entry';
+        el.innerHTML=`<span class="log-dot" style="background:${l.color}"></span>${l.action}<span class="log-time">${time}</span>`;
+        logEl.appendChild(el);
+      });
+    }
+  } catch { showToast('❌ Gagal memuat data admin.','error'); }
+}
+
+
+// ════════════════════════════
+// EDIT DIVISION
+// ════════════════════════════
+function openEditDiv(id, icon, name, desc) {
+  editingDivId = id;
+  document.getElementById('edit-div-icon').value = icon || '';
+  document.getElementById('edit-div-name').value = name || '';
+  document.getElementById('edit-div-desc').value = desc || '';
+  openModal('edit-div-modal');
+  // Focus nama setelah modal terbuka
+  setTimeout(() => document.getElementById('edit-div-name').focus(), 100);
+}
+
+async function confirmEditDiv() {
+  if (!editingDivId) return;
+  const icon = document.getElementById('edit-div-icon').value.trim();
+  const name = document.getElementById('edit-div-name').value.trim();
+  const desc = document.getElementById('edit-div-desc').value.trim();
+
+  if (!name) { showToast('⚠️ Nama divisi tidak boleh kosong.', 'error'); return; }
+
+  const btn = document.getElementById('btn-save-div');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+
+  try {
+    const data = await api('PUT', `/admin/divisions/${editingDivId}`, { name, description: desc, icon: icon || '📌' });
+    if (data.success) {
+      showToast('✅ ' + data.message);
+      closeModal('edit-div-modal');
+      editingDivId = null;
+      renderAdminTab();   // refresh list
+      renderVoteTab();    // refresh kartu voting juga
+    } else {
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch {
+    showToast('❌ Gagal menyimpan perubahan.', 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan';
+  }
+}
+
+// ════════════════════════════
+// PHOTO UPLOAD / DELETE
+// ════════════════════════════
+async function uploadPhoto(divId, input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 5*1024*1024) { showToast('❌ Ukuran file maksimal 5MB.','error'); return; }
+
+  const progressWrap = document.getElementById(`progress-${divId}`);
+  const progressBar  = document.getElementById(`progress-bar-${divId}`);
+  const statusEl     = document.getElementById(`pmi-status-${divId}`);
+  progressWrap.classList.add('show');
+
+  // Animate progress (fake, since fetch doesn't expose upload progress easily)
+  let prog = 0;
+  const ticker = setInterval(() => {
+    prog = Math.min(prog + Math.random()*15, 85);
+    progressBar.style.width = prog + '%';
+  }, 150);
+
+  try {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res  = await fetch(`/api/admin/divisions/${divId}/photo`, {
+      method: 'POST', credentials: 'include', body: formData
+    });
+    const data = await res.json();
+
+    clearInterval(ticker);
+    if (data.success) {
+      progressBar.style.width = '100%';
+      setTimeout(() => {
+        progressWrap.classList.remove('show');
+        progressBar.style.width = '0%';
+        showToast('✅ '+data.message);
+        renderAdminTab(); // refresh
+      }, 400);
+    } else {
+      clearInterval(ticker);
+      progressWrap.classList.remove('show');
+      showToast('❌ '+data.message,'error');
+    }
+  } catch {
+    clearInterval(ticker);
+    progressWrap.classList.remove('show');
+    showToast('❌ Gagal upload foto.','error');
+  }
+}
+
+async function deletePhoto(divId) {
+  if (!confirm('Hapus foto divisi ini?')) return;
+  const data = await api('DELETE',`/admin/divisions/${divId}/photo`);
+  if (data.success) { showToast('✅ '+data.message); renderAdminTab(); }
+  else showToast('❌ '+data.message,'error');
+}
+
+// ════════════════════════════
+// MEMBERS TAB
+// ════════════════════════════
+let membersView = 'card'; // 'card' | 'divisi' | 'list'
+
+async function renderMembersTab() {
+  const content = document.getElementById('members-content');
+  content.innerHTML = '<div style="color:var(--text2);font-size:14px;text-align:center;padding:60px"><div class="spinner" style="margin:0 auto 12px"></div>Memuat data anggota...</div>';
+  try {
+    const [mRes, dRes] = await Promise.all([api('GET','/members'), api('GET','/divisions')]);
+    cachedMembers   = mRes.data   || [];
+    cachedDivisions = dRes.data   || [];
+    buildMembersFilters();
+    renderMembersStats();
+    renderMembersView();
+  } catch {
+    content.innerHTML = '<div style="color:var(--rose);padding:60px;text-align:center">❌ Gagal memuat data anggota.</div>';
+  }
+}
+
+function buildMembersFilters() {
+  // Divisi filter
+  const divSel = document.getElementById('member-filter-div');
+  const savedDiv = divSel.value;
+  divSel.innerHTML = '<option value="">Semua Divisi</option>';
+  cachedDivisions.forEach(d => {
+    divSel.innerHTML += `<option value="${d.id}">${d.icon} ${d.name}</option>`;
+  });
+  divSel.value = savedDiv;
+
+  // Angkatan filter
+  const angSel = document.getElementById('member-filter-angkatan');
+  const savedAng = angSel.value;
+  const angkatan = [...new Set(cachedMembers.map(m => m.angkatan).filter(Boolean))].sort((a,b)=>b-a);
+  angSel.innerHTML = '<option value="">Semua Angkatan</option>';
+  angkatan.forEach(a => { angSel.innerHTML += `<option value="${a}">Angkatan ${a}</option>`; });
+  angSel.value = savedAng;
+}
+
+function renderMembersStats() {
+  const el = document.getElementById('members-stats-row');
+  const total = cachedMembers.length;
+  const divCount = cachedDivisions.length;
+  const angkatanCount = new Set(cachedMembers.map(m=>m.angkatan).filter(Boolean)).size;
+  const withPhoto = cachedMembers.filter(m=>m.photo_url).length;
+  el.innerHTML = `
+    <div class="ms-card" style="animation-delay:.0s"><span class="ms-icon">👥</span><div><div class="ms-label">Total Anggota</div><div class="ms-value">${total}</div></div></div>
+    <div class="ms-card" style="animation-delay:.07s"><span class="ms-icon">🏢</span><div><div class="ms-label">Divisi Aktif</div><div class="ms-value">${divCount}</div></div></div>
+    <div class="ms-card" style="animation-delay:.14s"><span class="ms-icon">📅</span><div><div class="ms-label">Angkatan</div><div class="ms-value">${angkatanCount}</div></div></div>
+    <div class="ms-card" style="animation-delay:.21s"><span class="ms-icon">📷</span><div><div class="ms-label">Punya Foto</div><div class="ms-value">${withPhoto}</div></div></div>
+  `;
+}
+
+function getFilteredMembers() {
+  const q      = (document.getElementById('member-search')?.value || '').toLowerCase();
+  const divId  = document.getElementById('member-filter-div')?.value || '';
+  const ang    = document.getElementById('member-filter-angkatan')?.value || '';
+  return cachedMembers.filter(m => {
+    const matchQ   = !q   || m.name.toLowerCase().includes(q) || m.nim.toLowerCase().includes(q) || (m.position||'').toLowerCase().includes(q);
+    const matchDiv = !divId || String(m.division_id) === divId;
+    const matchAng = !ang   || String(m.angkatan) === ang;
+    return matchQ && matchDiv && matchAng;
+  });
+}
+
+function filterMembers() { renderMembersView(); }
+
+function setMembersView(v) {
+  membersView = v;
+  ['card','divisi','list'].forEach(x => {
+    document.getElementById('vbtn-'+x)?.classList.toggle('active', x===v);
+  });
+  renderMembersView();
+}
+
+function renderMembersView() {
+  const members = getFilteredMembers();
+  const label = document.getElementById('members-count-label');
+  if (label) label.textContent = `${members.length} anggota`;
+
+  if (membersView === 'card')   renderCardView(members);
+  else if (membersView === 'divisi') renderDivisiView(members);
+  else renderListView(members);
+}
+
+/* ── CARD VIEW ── */
+function renderCardView(members) {
+  const c = document.getElementById('members-content');
+  if (!members.length) { c.innerHTML = emptyState(); return; }
+  c.innerHTML = '<div class="members-grid" id="members-grid"></div>';
+  const grid = document.getElementById('members-grid');
+  const isAdminCardView = window._currentRole === 'admin';
+  members.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    card.style.animationDelay = (i * 0.04) + 's';
+    card.onclick = () => openMemberDetail(m);
+    card.innerHTML = `
+      <div class="mc-photo" style="position:relative">
+        ${m.photo_url
+          ? `<img src="${m.photo_url}?t=${Date.now()}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mc-photo-ph" style="display:none">👤</div>`
+          : `<div class="mc-photo-ph">${avatarInitial(m.name)}</div>`}
+        ${isAdminCardView ? `<label class="mc-upload-overlay" onclick="event.stopPropagation()">
+          <span class="mc-upload-btn">📷 Ganti Foto</span>
+          <input type="file" accept="image/*" class="mc-upload-input" onchange="uploadMemberPhotoFromCard(${m.id},this)">
+        </label>` : ''}
+      </div>
+      <div class="mc-body">
+        <div class="mc-name">${m.name}</div>
+        <div class="mc-nim">${m.nim}</div>
+        ${m.position   ? `<div class="mc-position">${m.position}</div>` : ''}
+        ${m.division_name ? `<div class="mc-angkatan">${m.division_icon||''} ${m.division_name}</div>` : ''}
+        ${m.angkatan   ? `<div class="mc-angkatan" style="margin-top:2px">📅 ${m.angkatan}</div>` : ''}
+        <div class="mc-actions">
+          <button class="mc-btn mc-btn-profile">Lihat Profil</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ── DIVISI VIEW ── */
+function renderDivisiView(members) {
+  const c = document.getElementById('members-content');
+  c.innerHTML = '';
+
+  const divColors = ['#3b82f6','#a855f7','#f59e0b','#22c55e','#f43f5e','#06b6d4','#ec4899'];
+
+  // Group by division
+  const groups = {};
+  const noDivKey = '__none__';
+  cachedDivisions.forEach(d => { groups[d.id] = { div: d, members: [] }; });
+  groups[noDivKey] = { div: { id: null, name: 'Tanpa Divisi', icon: '👤', color: 'rgba(100,100,100,.2)', fill: '#6b7280' }, members: [] };
+
+  members.forEach(m => {
+    const key = m.division_id ? m.division_id : noDivKey;
+    if (groups[key]) groups[key].members.push(m);
+    else groups[noDivKey].members.push(m);
+  });
+
+  let colorIdx = 0;
+  Object.values(groups).forEach(({ div, members: gm }) => {
+    if (!gm.length) return;
+    const color = divColors[colorIdx++ % divColors.length];
+    const sec = document.createElement('div');
+    const isAdmin = window._currentRole === 'admin';
+    const hasBanner = !!div.photo_url;
+    sec.className = 'div-section-with-banner';
+    sec.innerHTML = `
+      <div class="div-section-banner">
+        ${hasBanner
+          ? `<img src="${div.photo_url}?t=${Date.now()}" alt="" loading="lazy">`
+          : `<div class="div-section-banner-ph">${div.icon}</div>`}
+        <div class="div-section-banner-overlay"></div>
+        ${isAdmin && div.id ? `
+          <div class="div-section-banner-actions">
+            <label style="background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 11px;color:#fff;font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(6px);position:relative">
+              📷 ${hasBanner?'Ganti Foto':'Upload Foto'}
+              <input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="uploadDivisionBannerFromCard(${div.id},this)">
+            </label>
+            ${hasBanner ? `<button onclick="deleteDivisionBannerFromCard(${div.id})" style="background:rgba(244,63,94,.6);border:none;border-radius:8px;padding:5px 11px;color:#fff;font-size:11px;cursor:pointer;backdrop-filter:blur(6px)">🗑️</button>` : ''}
+          </div>
+        ` : ''}
+      </div>
+      <div class="div-section-header-inner">
+        <div class="div-section-icon" style="background:${div.color||'rgba(59,130,246,.15)'}">${div.icon}</div>
+        <div class="div-section-info">
+          <div class="div-section-name">${div.name}</div>
+          <div class="div-section-count">${gm.length} anggota${div.description ? ` · <span style="color:var(--text3);font-size:11px">${div.description.substring(0,60)}${div.description.length>60?'…':''}</span>` : ''}</div>
+          <div class="div-section-bar" style="background:${color};opacity:.6"></div>
+        </div>
+      </div>
+      <div class="div-section-members-wrap"><div class="members-grid" id="dg-${div.id||'none'}"></div></div>
+    `;
+    c.appendChild(sec);
+    const grid = document.getElementById('dg-' + (div.id||'none'));
+    const isAdminCard = window._currentRole === 'admin';
+    gm.forEach((m, i) => {
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.style.animationDelay = (i * 0.04) + 's';
+      card.onclick = () => openMemberDetail(m);
+      card.innerHTML = `
+        <div class="mc-photo" style="position:relative">
+          ${m.photo_url
+            ? `<img src="${m.photo_url}?t=${Date.now()}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mc-photo-ph" style="display:none">👤</div>`
+            : `<div class="mc-photo-ph">${avatarInitial(m.name)}</div>`}
+          ${isAdminCard ? `<label class="mc-upload-overlay" onclick="event.stopPropagation()">
+            <span class="mc-upload-btn">📷 Ganti Foto</span>
+            <input type="file" accept="image/*" class="mc-upload-input" onchange="uploadMemberPhotoFromCard(${m.id},this)">
+          </label>` : ''}
+        </div>
+        <div class="mc-body">
+          <div class="mc-name">${m.name}</div>
+          <div class="mc-nim">${m.nim}</div>
+          ${m.position ? `<div class="mc-position">${m.position}</div>` : ''}
+          ${m.angkatan ? `<div class="mc-angkatan">📅 ${m.angkatan}</div>` : ''}
+          <div class="mc-actions"><button class="mc-btn mc-btn-profile">Lihat Profil</button></div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  });
+
+  if (!c.children.length) c.innerHTML = emptyState();
+}
+
+/* ── LIST VIEW ── */
+function renderListView(members) {
+  const c = document.getElementById('members-content');
+  if (!members.length) { c.innerHTML = emptyState(); return; }
+  c.innerHTML = '<div class="members-list" id="members-list"></div>';
+  const list = document.getElementById('members-list');
+  members.forEach((m, i) => {
+    const row = document.createElement('div');
+    row.className = 'ml-row';
+    row.style.animationDelay = (i * 0.03) + 's';
+    row.onclick = () => openMemberDetail(m);
+    row.innerHTML = `
+      <div class="ml-avatar">
+        ${m.photo_url
+          ? `<img src="${m.photo_url}?t=${Date.now()}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="ml-avatar-ph" style="display:none">👤</div>`
+          : `<div class="ml-avatar-ph">${avatarInitial(m.name)}</div>`}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="ml-name">${m.name}</div>
+        <div class="ml-nim">${m.nim}</div>
+      </div>
+      ${m.division_name ? `<span class="ml-badge">${m.division_icon||''} ${m.division_name}</span>` : ''}
+      ${m.position      ? `<span class="ml-position">${m.position}</span>` : ''}
+      ${m.angkatan      ? `<span class="ml-angkatan">📅 ${m.angkatan}</span>` : ''}
+      <span style="color:var(--text3);font-size:16px">›</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+
+/* ── HELPERS ── */
+function avatarInitial(name) {
+  const initials = name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+  const colors = ['#3b82f6','#a855f7','#06b6d4','#22c55e','#f59e0b','#f43f5e'];
+  const color  = colors[name.charCodeAt(0) % colors.length];
+  return `<div style="width:100%;height:100%;background:${color}22;display:flex;align-items:center;justify-content:center;font-family:'Clash Display',sans-serif;font-size:32px;font-weight:700;color:${color}">${initials||'?'}</div>`;
+}
+
+function emptyState() {
+  return '<div style="text-align:center;padding:60px;color:var(--text2)"><div style="font-size:48px;margin-bottom:12px">👥</div><div style="font-size:15px">Belum ada anggota yang cocok.</div></div>';
+}
+
+/* ── PROFILE MODAL ── */
+function openMemberDetail(m) {
+  const cover_colors = ['#2563eb','#7c3aed','#0891b2','#15803d','#b45309','#be123c'];
+  const color = cover_colors[(m.name||'').charCodeAt(0) % cover_colors.length];
+  const contacts = [];
+  if (m.email) contacts.push(`<div class="pm-contact"><span class="pm-contact-icon">📧</span><div><div class="pm-contact-label">Email</div><div class="pm-contact-val">${m.email}</div></div></div>`);
+  if (m.phone) contacts.push(`<div class="pm-contact"><span class="pm-contact-icon">📱</span><div><div class="pm-contact-label">WhatsApp / HP</div><div class="pm-contact-val">${m.phone}</div></div></div>`);
+
+  document.getElementById('member-detail-content').innerHTML = `
+    <div class="pm-cover" style="background:linear-gradient(135deg,${color}88,${color}44);height:110px;position:relative">
+      <div class="pm-avatar">
+        ${m.photo_url
+          ? `<img src="${m.photo_url}?t=${Date.now()}" alt="">`
+          : `<div class="pm-avatar-ph" style="background:${color}22;color:${color};font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700">${(m.name||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()}</div>`}
+      </div>
+    </div>
+    <div class="pm-body">
+      <div class="pm-name">${m.name}</div>
+      <div class="pm-nim">${m.nim}</div>
+      <div class="pm-tags">
+        ${m.division_name ? `<span class="pm-tag highlight">${m.division_icon||''} ${m.division_name}</span>` : ''}
+        ${m.position      ? `<span class="pm-tag">💼 ${m.position}</span>` : ''}
+        ${m.angkatan      ? `<span class="pm-tag">📅 Angkatan ${m.angkatan}</span>` : ''}
+      </div>
+      ${m.bio ? `<div class="pm-bio">${m.bio}</div>` : ''}
+      ${contacts.length ? `<div class="pm-contacts">${contacts.join('')}</div>` : ''}
+      ${window._currentRole === 'admin' ? `
+        <div style="margin-top:14px;text-align:center">
+          <button onclick="openPhotoUploadModal('member',${m.id},'Ganti Foto – ${m.name}','Upload foto profil untuk anggota ini');closeModal('member-detail-modal')" style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);border-radius:10px;padding:9px 20px;color:var(--cyan);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">📷 Ganti Foto Profil</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+  openModal('member-detail-modal');
+}
+
+
+
+// ════════════════════════════
+// ADMIN — DIVISION ADD/DELETE
+// ════════════════════════════
+async function confirmAddDiv() {
+  const icon = document.getElementById('adiv-icon').value.trim() || '📌';
+  const name = document.getElementById('adiv-name').value.trim();
+  const desc = document.getElementById('adiv-desc').value.trim();
+  if (!name) { showToast('⚠️ Nama divisi wajib diisi.','error'); return; }
+  const btn = document.getElementById('btn-save-adiv');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    const data = await api('POST', '/admin/divisions', { name, description: desc, icon });
+    if (data.success) {
+      showToast('✅ ' + data.message);
+      closeModal('add-div-modal');
+      document.getElementById('adiv-name').value = '';
+      document.getElementById('adiv-desc').value = '';
+      document.getElementById('adiv-icon').value = '📌';
+      renderAdminTab();
+    } else { showToast('❌ ' + data.message, 'error'); }
+  } catch { showToast('❌ Gagal menambah divisi.','error'); }
+  finally { btn.disabled = false; btn.textContent = 'Tambah Divisi'; }
+}
+
+function openDeleteDiv(id, name) {
+  pendingDeleteDivId = id;
+  document.getElementById('del-div-name').textContent = name;
+  openModal('del-div-modal');
+}
+
+async function confirmDeleteDiv() {
+  closeModal('del-div-modal');
+  if (!pendingDeleteDivId) return;
+  const data = await api('DELETE', `/admin/divisions/${pendingDeleteDivId}`);
+  if (data.success) { showToast('✅ ' + data.message); renderAdminTab(); }
+  else showToast('❌ ' + data.message, 'error');
+  pendingDeleteDivId = null;
+}
+
+// ════════════════════════════
+// ADMIN — MEMBER CRUD
+// ════════════════════════════
+function openAddMemberModal() {
+  editingMemberId = null;
+  document.getElementById('member-modal-icon').textContent = '👤';
+  document.getElementById('member-modal-title').textContent = 'Tambah Anggota Baru';
+  document.getElementById('btn-save-member').textContent = 'Tambah Anggota';
+  ['member-id','m-name','m-nim','m-position','m-email','m-phone','m-bio'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('m-angkatan').value = '';
+  document.getElementById('m-division').value = '';
+  // Isi dropdown divisi
+  populateMemberDivSelect();
+  openModal('member-modal');
+}
+
+function openEditMemberModal(m) {
+  editingMemberId = m.id;
+  document.getElementById('member-modal-icon').textContent = '✏️';
+  document.getElementById('member-modal-title').textContent = 'Edit Data Anggota';
+  document.getElementById('btn-save-member').textContent = 'Simpan Perubahan';
+  document.getElementById('member-id').value    = m.id;
+  document.getElementById('m-name').value       = m.name || '';
+  document.getElementById('m-nim').value        = m.nim  || '';
+  document.getElementById('m-position').value   = m.position || '';
+  document.getElementById('m-angkatan').value   = m.angkatan || '';
+  document.getElementById('m-email').value      = m.email || '';
+  document.getElementById('m-phone').value      = m.phone || '';
+  document.getElementById('m-bio').value        = m.bio   || '';
+  populateMemberDivSelect(m.division_id);
+  openModal('member-modal');
+}
+
+function populateMemberDivSelect(selectedId) {
+  const sel = document.getElementById('m-division');
+  sel.innerHTML = '<option value="">— Tanpa Divisi —</option>';
+  cachedDivisions.forEach(d => {
+    sel.innerHTML += `<option value="${d.id}" ${d.id==selectedId?'selected':''}>${d.icon} ${d.name}</option>`;
+  });
+}
+
+async function confirmSaveMember() {
+  const name       = document.getElementById('m-name').value.trim();
+  const nim        = document.getElementById('m-nim').value.trim();
+  const division_id = document.getElementById('m-division').value || null;
+  const position   = document.getElementById('m-position').value.trim();
+  const angkatan   = document.getElementById('m-angkatan').value || null;
+  const email      = document.getElementById('m-email').value.trim();
+  const phone      = document.getElementById('m-phone').value.trim();
+  const bio        = document.getElementById('m-bio').value.trim();
+  if (!name || !nim) { showToast('⚠️ Nama dan NIM wajib diisi.','error'); return; }
+
+  const btn = document.getElementById('btn-save-member');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+
+  try {
+    const payload = { name, nim, division_id, position, angkatan, email, phone, bio };
+    const data = editingMemberId
+      ? await api('PUT',  `/admin/members/${editingMemberId}`, payload)
+      : await api('POST', '/admin/members', payload);
+
+    if (data.success) {
+      showToast('✅ ' + data.message);
+      closeModal('member-modal');
+      renderAdminTab();
+      if (document.getElementById('tab-members').classList.contains('active')) renderMembersTab();
+    } else { showToast('❌ ' + data.message, 'error'); }
+  } catch { showToast('❌ Gagal menyimpan data.','error'); }
+  finally { btn.disabled = false; btn.textContent = editingMemberId ? 'Simpan Perubahan' : 'Tambah Anggota'; }
+}
+
+function openDeleteMember(id, name) {
+  pendingDeleteMemberId = id;
+  document.getElementById('del-member-name').textContent = name;
+  openModal('del-member-modal');
+}
+
+async function confirmDeleteMember() {
+  closeModal('del-member-modal');
+  if (!pendingDeleteMemberId) return;
+  const data = await api('DELETE', `/admin/members/${pendingDeleteMemberId}`);
+  if (data.success) { showToast('✅ ' + data.message); renderAdminTab(); }
+  else showToast('❌ ' + data.message, 'error');
+  pendingDeleteMemberId = null;
+}
+
+async function uploadMemberPhoto(memberId, input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 5*1024*1024) { showToast('❌ Ukuran file maksimal 5MB.','error'); return; }
+  try {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res  = await fetch(`/api/admin/members/${memberId}/photo`, { method:'POST', credentials:'include', body: formData });
+    const data = await res.json();
+    if (data.success) { showToast('✅ ' + data.message); renderAdminTab(); }
+    else showToast('❌ ' + data.message, 'error');
+  } catch { showToast('❌ Gagal upload foto.','error'); }
+}
+
+
+async function addUser() {
+  const username=document.getElementById('new-username').value.trim();
+  const password=document.getElementById('new-password').value.trim();
+  const role=document.getElementById('new-role').value;
+  if (!username||!password) { showToast('⚠️ Username dan password wajib diisi.','error'); return; }
+  const data=await api('POST','/admin/users',{username,password,role});
+  if (data.success) { showToast('✅ '+data.message); document.getElementById('new-username').value=''; document.getElementById('new-password').value=''; renderAdminTab(); }
+  else showToast('❌ '+data.message,'error');
+}
+
+function openDeleteUser(id, username) { pendingDeleteUserId=id; document.getElementById('del-user-name').textContent=username; openModal('del-user-modal'); }
+async function confirmDeleteUser() {
+  closeModal('del-user-modal');
+  if (!pendingDeleteUserId) return;
+  const data=await api('DELETE',`/admin/users/${pendingDeleteUserId}`);
+  if (data.success) { showToast('✅ '+data.message); renderAdminTab(); }
+  else showToast('❌ '+data.message,'error');
+  pendingDeleteUserId=null;
+}
+
+async function savePeriod() {
+  const month=document.getElementById('period-month').value;
+  const year=document.getElementById('period-year').value;
+  const data=await api('PUT','/admin/period',{month:parseInt(month),year:parseInt(year)});
+  if (data.success) { showToast('✅ '+data.message); document.getElementById('period-label').textContent=data.label; renderAdminTab(); }
+  else showToast('❌ '+data.message,'error');
+}
+
+async function confirmReset() {
+  closeModal('reset-modal');
+  const data=await api('DELETE','/admin/votes/reset');
+  if (data.success) { showToast('✅ Semua vote berhasil direset.'); renderAdminTab(); }
+  else showToast('❌ '+data.message,'error');
+}
+
+async function confirmResetMemberVotes() {
+  closeModal('reset-member-modal');
+  const data = await api('DELETE', '/admin/member-votes/reset');
+  if (data.success) { showToast('✅ ' + data.message); renderAdminTab(); }
+  else showToast('❌ ' + data.message, 'error');
+}
+
+// ════════════════════════════
+// EXPORT
+// ════════════════════════════
+async function exportCSV() {
+  const r=await api('GET','/admin/export');
+  if (!r.success) { showToast('❌ '+r.message,'error'); return; }
+  const {period,summary,detail}=r;
+  let csv=`Laporan Voting HIMA TI - ${period.label}\n\nRINGKASAN\nDivisi,Total Suara,Voter\n`;
+  summary.forEach(s=>{ csv+=`"${s.division}",${s.total},"${s.voters||''}"\n`; });
+  csv+='\nDETAIL VOTER\nUsername,Divisi Pilihan,Waktu Vote\n';
+  detail.forEach(d=>{ csv+=`"${d.username}","${d.voted_for}","${new Date(d.voted_at).toLocaleString('id-ID')}"\n`; });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`voting-hima-ti-${period.label.replace(' ','-')}.csv`; a.click(); URL.revokeObjectURL(url);
+  showToast('✅ CSV berhasil diexport.');
+}
+
+async function exportPDF() {
+  const r=await api('GET','/admin/export');
+  if (!r.success) { showToast('❌ '+r.message,'error'); return; }
+  const {period,summary,detail}=r;
+  const totalV=summary.reduce((a,b)=>a+parseInt(b.total),0);
+  const rows=summary.map((s,i)=>{
+    const pct=totalV>0?Math.round(parseInt(s.total)/totalV*100):0;
+    return `<tr><td>${['🥇','🥈','🥉',''][Math.min(i,3)]} ${s.division}</td><td>${s.total}</td><td>${pct}%</td></tr>`;
+  }).join('');
+  const detailRows=detail.map(d=>`<tr><td>${d.username}</td><td>${d.voted_for}</td><td>${new Date(d.voted_at).toLocaleString('id-ID')}</td></tr>`).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Laporan Voting HIMA TI - ${period.label}</title>
+  <style>body{font-family:Arial,sans-serif;padding:40px;color:#111;max-width:750px;margin:auto}h1{font-size:22px}h2{font-size:16px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:6px}.sub{color:#555;font-size:13px;margin:4px 0 24px}.stats{display:flex;gap:16px;margin-bottom:20px}.stat{background:#f5f5f5;border-radius:8px;padding:12px 16px;min-width:110px}.stat .lbl{font-size:10px;text-transform:uppercase;color:#888;margin-bottom:4px}.stat .val{font-size:22px;font-weight:700}table{width:100%;border-collapse:collapse}th{background:#111;color:#fff;padding:9px 12px;text-align:left;font-size:12px}td{padding:9px 12px;border-bottom:1px solid #eee;font-size:13px}tr:last-child td{border:none}.footer{margin-top:28px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px}</style>
+  </head><body>
+  <h1>📊 Laporan Voting HIMA Teknik Informatika</h1>
+  <div class="sub">Periode: ${period.label} &nbsp;|&nbsp; Dicetak: ${new Date().toLocaleString('id-ID')}</div>
+  <div class="stats"><div class="stat"><div class="lbl">Total Suara</div><div class="val">${totalV}</div></div><div class="stat"><div class="lbl">Total Voter</div><div class="val">${detail.length}</div></div><div class="stat"><div class="lbl">Divisi</div><div class="val">${summary.length}</div></div></div>
+  <h2>Ringkasan Perolehan Suara</h2><table><thead><tr><th>Divisi</th><th>Suara</th><th>%</th></tr></thead><tbody>${rows}</tbody></table>
+  <h2>Detail Voter</h2><table><thead><tr><th>Username</th><th>Pilihan</th><th>Waktu</th></tr></thead><tbody>${detailRows}</tbody></table>
+  <div class="footer">Dibuat otomatis oleh sistem HMIF UMBANDUNG Vote.</div></body></html>`;
+  const w=window.open('','_blank'); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
+  showToast('✅ Laporan PDF siap dicetak.');
+}
+
+// ════════════════════════════
+// MODALS
+// ════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('show'); });
+});
+
+// ════════════════════════════
+// CONFETTI
+// ════════════════════════════
+function spawnConfetti() {
+  const cols=['#2563eb','#06b6d4','#f59e0b','#22c55e','#a855f7','#f43f5e','#fbbf24'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div'), size=7+Math.random()*10;
+    el.className='confetti-bit';
+    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};animation:confettiDrop ${1.4+Math.random()*2}s linear ${Math.random()*.8}s forwards`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+}
+// ════════════════════════════════════════════
+// VOTE ANGGOTA TAB
+// ════════════════════════════════════════════
+
+let selectedMemberId = null;
+let selectedMemberName = '';
+let cachedMemberVoteData = [];   // all members for filtering
+
+async function renderVoteMemberTab() {
+  const grid = document.getElementById('member-vote-grid');
+  grid.innerHTML = '<div style="color:var(--text2);font-size:14px;text-align:center;padding:60px;grid-column:1/-1"><div class="spinner" style="margin:0 auto 12px"></div>Memuat anggota...</div>';
+
+  try {
+    const [membersRes, periodRes, statusRes, divsRes] = await Promise.all([
+      api('GET', '/members'),
+      api('GET', '/period/active'),
+      api('GET', '/member-votes/status'),
+      api('GET', '/divisions')
+    ]);
+
+    const members   = membersRes.data  || [];
+    const period    = periodRes.data;
+    const hasVoted  = statusRes.hasVoted;
+    const voteInfo  = statusRes.voteInfo;
+    const divisions = divsRes.data || [];
+
+    cachedMemberVoteData = members;
+
+    document.getElementById('vm-period-label').textContent = period ? period.label : '—';
+
+    // Voted alert
+    const alertEl = document.getElementById('vm-voted-alert');
+    if (hasVoted && voteInfo) {
+      const divTag = voteInfo.division_name ? ` (${voteInfo.division_icon||''} ${voteInfo.division_name})` : '';
+      document.getElementById('vm-voted-for-name').textContent = voteInfo.member_name + divTag;
+      alertEl.classList.add('show');
+      document.getElementById('vm-vote-submit').style.display = 'none';
+    } else {
+      alertEl.classList.remove('show');
+      document.getElementById('vm-vote-submit').style.display = 'flex';
+    }
+
+    // Populate division filter
+    const divSel = document.getElementById('vm-filter-div');
+    divSel.innerHTML = '<option value="">Semua Divisi</option>';
+    divisions.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.icon + ' ' + d.name;
+      divSel.appendChild(opt);
+    });
+
+    // Load vote counts if already voted
+    let votes = {}, total = 0;
+    if (hasVoted) {
+      const r = await api('GET', '/member-votes/results');
+      (r.data || []).forEach(m => { votes[m.id] = parseInt(m.vote_count); total += parseInt(m.vote_count); });
+    }
+
+    // Render cards
+    renderVoteMemberCards(members, votes, total, hasVoted, voteInfo);
+
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = '<div style="color:var(--rose);font-size:14px;text-align:center;padding:60px;grid-column:1/-1">❌ Gagal memuat data.</div>';
+  }
+}
+
+function renderVoteMemberCards(members, votes, total, hasVoted, voteInfo) {
+  const grid = document.getElementById('member-vote-grid');
+  const label = document.getElementById('vm-count-label');
+  label.textContent = members.length + ' anggota';
+
+  if (!members.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text2);grid-column:1/-1"><div style="font-size:48px;margin-bottom:12px">👥</div>Belum ada anggota terdaftar.</div>';
+    return;
+  }
+
+  const maxVotes = total > 0 ? Math.max(...Object.values(votes), 0) : 0;
+  grid.innerHTML = '';
+  members.forEach((m, i) => {
+    const count  = votes[m.id] || 0;
+    const pct    = total > 0 ? Math.round(count / total * 100) : 0;
+    const isWinner = hasVoted && count > 0 && count === maxVotes;
+    const isMyVote = hasVoted && voteInfo && parseInt(voteInfo.member_id || 0) === m.id;
+
+    const card = document.createElement('div');
+    card.className = 'mv-card' + (hasVoted ? ' disabled' : '') + (isMyVote ? ' my-member-vote selected' : '');
+    card.style.animationDelay = (i * 0.04) + 's';
+    if (!hasVoted) card.onclick = () => selectMember(m.id, m.name);
+
+    const photoHtml = m.photo_url
+      ? `<img src="${m.photo_url}?t=${Date.now()}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mc-photo-ph" style="display:none">${avatarInitial(m.name)}</div>`
+      : `<div class="mc-photo-ph">${avatarInitial(m.name)}</div>`;
+
+    card.innerHTML = `
+      ${isWinner ? '<span class="mv-winner-tag">🏆 Unggul</span>' : ''}
+      <div class="mc-photo">${photoHtml}</div>
+      <div class="mv-body">
+        <div class="mv-top-row">
+          <div class="mv-name" style="flex:1">${m.name}</div>
+          ${!hasVoted ? '<div class="mv-radio"></div>' : ''}
+        </div>
+        <div class="mv-meta">${m.nim}${m.angkatan ? ' · ' + m.angkatan : ''}</div>
+        ${m.division_name ? `<div class="mv-div-badge">${m.division_icon||''} ${m.division_name}</div>` : ''}
+        ${m.position ? `<div style="font-size:10px;color:var(--cyan);font-weight:600;margin-bottom:4px">${m.position}</div>` : ''}
+        ${isMyVote ? '<div class="my-member-vote-tag">⭐ Pilihanmu</div>' : ''}
+        ${hasVoted ? `
+          <div class="mv-bar-wrap">
+            <div class="mv-bar-row"><span>Suara</span><b>${count} (${pct}%)</b></div>
+            <div class="mv-bar"><div class="mv-bar-fill" data-pct="${pct}" style="width:0%"></div></div>
+          </div>` : ''}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.mv-bar-fill').forEach(el => { el.style.width = el.dataset.pct + '%'; });
+  }, 100);
+}
+
+function filterMemberVoteCards() {
+  const search = (document.getElementById('vm-search')?.value || '').toLowerCase();
+  const divId  = document.getElementById('vm-filter-div')?.value || '';
+  const filtered = cachedMemberVoteData.filter(m => {
+    const matchName = m.name.toLowerCase().includes(search) || (m.nim||'').toLowerCase().includes(search);
+    const matchDiv  = !divId || String(m.division_id) === divId;
+    return matchName && matchDiv;
+  });
+  document.getElementById('vm-count-label').textContent = filtered.length + ' anggota';
+  const grid = document.getElementById('member-vote-grid');
+  grid.innerHTML = '';
+  // Re-render just the filtered cards (without vote counts for simplicity)
+  filtered.forEach((m, i) => {
+    const isSelected = m.id === selectedMemberId;
+    const card = document.createElement('div');
+    card.className = 'mv-card' + (isSelected ? ' selected' : '');
+    card.style.animationDelay = (i * 0.04) + 's';
+    card.onclick = () => selectMember(m.id, m.name);
+    const photoHtml = m.photo_url
+      ? `<img src="${m.photo_url}?t=${Date.now()}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">`
+      : `<div class="mc-photo-ph">${avatarInitial(m.name)}</div>`;
+    card.innerHTML = `
+      <div class="mc-photo">${photoHtml}</div>
+      <div class="mv-body">
+        <div class="mv-top-row">
+          <div class="mv-name" style="flex:1">${m.name}</div>
+          <div class="mv-radio"></div>
+        </div>
+        <div class="mv-meta">${m.nim}${m.angkatan ? ' · ' + m.angkatan : ''}</div>
+        ${m.division_name ? `<div class="mv-div-badge">${m.division_icon||''} ${m.division_name}</div>` : ''}
+        ${m.position ? `<div style="font-size:10px;color:var(--cyan);font-weight:600">${m.position}</div>` : ''}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function selectMember(id, name) {
+  selectedMemberId   = id;
+  selectedMemberName = name;
+  document.querySelectorAll('.mv-card').forEach(c => c.classList.remove('selected'));
+  // Find the clicked card by iterating grid children
+  const grid = document.getElementById('member-vote-grid');
+  Array.from(grid.children).forEach(card => {
+    const nameEl = card.querySelector('.mv-name');
+    if (nameEl && nameEl.textContent.trim() === name) card.classList.add('selected');
+  });
+  document.getElementById('btn-vm-vote').disabled = false;
+  document.getElementById('vm-vote-hint').textContent = 'Kamu memilih: ' + name;
+}
+
+function openVmConfirmModal() {
+  if (!selectedMemberId) return;
+  document.getElementById('vm-confirm-name').textContent = selectedMemberName;
+  openModal('vm-confirm-modal');
+}
+
+async function confirmMemberVote() {
+  closeModal('vm-confirm-modal');
+  const btn = document.getElementById('btn-vm-vote');
+  btn.disabled = true;
+  btn.textContent = 'Mengirim...';
+  try {
+    const data = await api('POST', '/member-votes', { member_id: selectedMemberId });
+    if (data.success) {
+      showToast('⭐ Suara untuk ' + data.member + ' berhasil!');
+      selectedMemberId = null; selectedMemberName = '';
+      renderVoteMemberTab();
+      showSuccessScreen('member');
+    } else {
+      showToast('❌ ' + data.message, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Kirim Suara Anggota →';
+    }
+  } catch {
+    showToast('❌ Gagal mengirim suara.', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Kirim Suara Anggota →';
+  }
+}
+
+
+// ════════════════════════════════════════════
+// DRAG-DROP PHOTO UPLOAD MODAL
+// ════════════════════════════════════════════
+
+let _pumMode = null; // 'division' | 'member'
+let _pumTargetId = null;
+let _pumFile = null;
+
+function openPhotoUploadModal(mode, targetId, title='Upload Foto', subtitle='Pilih foto untuk diupload') {
+  _pumMode = mode;
+  _pumTargetId = targetId;
+  _pumFile = null;
+  document.getElementById('pum-title').textContent = title;
+  document.getElementById('pum-subtitle').textContent = subtitle;
+  document.getElementById('pum-file-input').value = '';
+  pumClearPreview();
+  document.getElementById('pum-progress').classList.remove('show');
+  document.getElementById('pum-progress-bar').style.width = '0%';
+  document.getElementById('pum-confirm-btn').disabled = true;
+  document.getElementById('pum-confirm-btn').textContent = 'Upload Foto';
+  openModal('photo-upload-modal');
+
+  // Setup drag-drop
+  const dz = document.getElementById('pum-dropzone');
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag-over'); };
+  dz.ondragleave = () => dz.classList.remove('drag-over');
+  dz.ondrop = e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) pumSetFile(file);
+    else showToast('❌ Pilih file gambar (JPG/PNG/WebP)','error');
+  };
+}
+
+function pumFileSelected(input) {
+  if (input.files[0]) pumSetFile(input.files[0]);
+}
+
+function pumSetFile(file) {
+  if (file.size > 5*1024*1024) { showToast('❌ Ukuran file maksimal 5MB.','error'); return; }
+  _pumFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const wrap = document.getElementById('pum-preview-wrap');
+    document.getElementById('pum-preview-img').src = e.target.result;
+    wrap.classList.add('show');
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('pum-confirm-btn').disabled = false;
+}
+
+function pumClearPreview() {
+  _pumFile = null;
+  document.getElementById('pum-preview-wrap').classList.remove('show');
+  document.getElementById('pum-preview-img').src = '';
+  document.getElementById('pum-confirm-btn').disabled = true;
+  document.getElementById('pum-file-input').value = '';
+}
+
+async function pumConfirmUpload() {
+  if (!_pumFile) return;
+  const btn = document.getElementById('pum-confirm-btn');
+  const progress = document.getElementById('pum-progress');
+  const bar = document.getElementById('pum-progress-bar');
+  btn.disabled = true;
+  btn.textContent = 'Mengupload...';
+  progress.classList.add('show');
+
+  let prog = 0;
+  const ticker = setInterval(() => {
+    prog = Math.min(prog + Math.random()*18, 85);
+    bar.style.width = prog + '%';
+  }, 150);
+
+  try {
+    const formData = new FormData();
+    formData.append('photo', _pumFile);
+    let url = _pumMode === 'division'
+      ? `/api/admin/divisions/${_pumTargetId}/photo`
+      : `/api/admin/members/${_pumTargetId}/photo`;
+    const res = await fetch(url, { method:'POST', credentials:'include', body: formData });
+    const data = await res.json();
+    clearInterval(ticker);
+    if (data.success) {
+      bar.style.width = '100%';
+      setTimeout(async () => {
+        closeModal('photo-upload-modal');
+        showToast('✅ ' + data.message);
+        if (_pumMode === 'division') {
+          const d = await api('GET', '/divisions');
+          if (d.success) cachedDivisions = d.data;
+          renderMembersTab();
+          renderAdminTab();
+        } else {
+          renderMembersTab();
+          renderAdminTab();
+        }
+      }, 400);
+    } else {
+      progress.classList.remove('show');
+      bar.style.width = '0%';
+      btn.disabled = false;
+      btn.textContent = 'Upload Foto';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch {
+    clearInterval(ticker);
+    progress.classList.remove('show');
+    btn.disabled = false;
+    btn.textContent = 'Upload Foto';
+    showToast('❌ Gagal upload foto.','error');
+  }
+}
+
+
+// ════════════════════════════════════════════
+// QUICK UPLOAD HELPERS (from card views)
+// ════════════════════════════════════════════
+
+async function uploadMemberPhotoFromCard(memberId, input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 5*1024*1024) { showToast('❌ Ukuran file maksimal 5MB.','error'); return; }
+  showToast('⏳ Mengupload foto...');
+  try {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res = await fetch(`/api/admin/members/${memberId}/photo`, { method:'POST', credentials:'include', body: formData });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ ' + data.message);
+      renderMembersTab(); // refresh members tab
+    } else showToast('❌ ' + data.message, 'error');
+  } catch { showToast('❌ Gagal upload foto.','error'); }
+}
+
+async function uploadDivisionBannerFromCard(divId, input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 5*1024*1024) { showToast('❌ Ukuran file maksimal 5MB.','error'); return; }
+  showToast('⏳ Mengupload foto divisi...');
+  try {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res = await fetch(`/api/admin/divisions/${divId}/photo`, { method:'POST', credentials:'include', body: formData });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ ' + data.message);
+      // Reload cached divisions then re-render
+      const d = await api('GET', '/divisions');
+      if (d.success) cachedDivisions = d.data;
+      renderMembersTab();
+    } else showToast('❌ ' + data.message, 'error');
+  } catch { showToast('❌ Gagal upload foto divisi.','error'); }
+}
+
+async function deleteDivisionBannerFromCard(divId) {
+  if (!confirm('Hapus foto divisi ini?')) return;
+  const data = await api('DELETE', `/admin/divisions/${divId}/photo`);
+  if (data.success) {
+    showToast('✅ ' + data.message);
+    const d = await api('GET', '/divisions');
+    if (d.success) cachedDivisions = d.data;
+    renderMembersTab();
+  } else showToast('❌ ' + data.message, 'error');
+}
+
+
+</script>
+</body>
+</html>
