@@ -2,8 +2,10 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const cors    = require('cors');
 const path    = require('path');
+const db      = require('./db');
 const routes  = require('./routes');
 
 const app  = express();
@@ -16,8 +18,15 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const sessionStore = new MySQLStore({
+  clearExpired: true,
+  checkExpirationInterval: 900000, // 15 menit
+  expiration: 8 * 60 * 60 * 1000,  // 8 jam
+}, db);
+
 app.use(session({
   secret:            process.env.SESSION_SECRET || 'hima_secret_dev',
+  store:             sessionStore,
   resave:            false,
   saveUninitialized: false,
   cookie: {
