@@ -198,9 +198,11 @@ router.delete('/admin/members/:id', requireAdmin, async (req, res) => {
   try {
     const [rows] = await db.execute('SELECT name, nim, photo_url FROM members WHERE id = ?', [memberId]);
     if (!rows.length) return res.json({ success: false, message: 'Anggota tidak ditemukan.' });
-    if (rows[0].photo_url) {
+    if (rows[0].photo_url && !rows[0].photo_url.startsWith('/api/')) {
       const fp = path.join(__dirname, '../public', rows[0].photo_url);
-      if (fs.existsSync(fp)) fs.unlinkSync(fp);
+      try {
+        if (fs.existsSync(fp)) fs.unlinkSync(fp);
+      } catch (err) {}
     }
     await db.execute('DELETE FROM members WHERE id = ?', [memberId]);
     await db.execute(
@@ -232,20 +234,16 @@ router.post('/admin/members/:id/photo', requireAdmin, (req, res) => {
 
     const memberId = req.params.id;
     const actor    = req.session.user.username;
-    const ext      = path.extname(req.file.originalname).toLowerCase();
-    const fname    = `member-${memberId}-${Date.now()}${ext}`;
-    const fpath    = path.join(memberUploadDir, fname);
-    const photoUrl = `/uploads/members/${fname}`;
+    const photoUrl = `/api/admin/members/${memberId}/photo`;
 
     try {
-      fs.writeFileSync(fpath, req.file.buffer);
-      const [old] = await db.execute('SELECT photo_url, name FROM members WHERE id = ?', [memberId]);
-      if (!old.length) { fs.unlinkSync(fpath); return res.json({ success: false, message: 'Anggota tidak ditemukan.' }); }
-      if (old[0].photo_url) {
-        const oldPath = path.join(__dirname, '../public', old[0].photo_url);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      }
-      await db.execute('UPDATE members SET photo_url = ? WHERE id = ?', [photoUrl, memberId]);
+      const [old] = await db.execute('SELECT name FROM members WHERE id = ?', [memberId]);
+      if (!old.length) return res.json({ success: false, message: 'Anggota tidak ditemukan.' });
+
+      await db.execute(
+        'UPDATE members SET photo_data = ?, photo_mime = ?, photo_url = ? WHERE id = ?',
+        [req.file.buffer, req.file.mimetype, photoUrl, memberId]
+      );
       await db.execute(
         'INSERT INTO activity_logs (actor, action, color) VALUES (?, ?, ?)',
         [actor, `🖼️ Admin upload foto anggota: ${old[0].name}`, '#06b6d4']
@@ -253,10 +251,28 @@ router.post('/admin/members/:id/photo', requireAdmin, (req, res) => {
       res.json({ success: true, photo_url: photoUrl, message: 'Foto berhasil diupload!' });
     } catch (dbErr) {
       console.error(dbErr);
-      if (fs.existsSync(fpath)) fs.unlinkSync(fpath);
       res.status(500).json({ success: false, message: 'Gagal menyimpan foto.' });
     }
   });
+});
+
+// GET route to serve member photo from DB
+router.get('/admin/members/:id/photo', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const [rows] = await db.execute(
+      'SELECT photo_data, photo_mime FROM members WHERE id = ?',
+      [memberId]
+    );
+    if (!rows.length || !rows[0].photo_data) {
+      return res.status(404).send('Not Found');
+    }
+    res.setHeader('Content-Type', rows[0].photo_mime || 'image/jpeg');
+    res.send(rows[0].photo_data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
 });
 
 
@@ -359,30 +375,18 @@ router.post('/admin/divisions/:id/photo', requireAdmin, (req, res) => {
     if (err) return res.json({ success: false, message: err.message });
     if (!req.file) return res.json({ success: false, message: 'File foto tidak ditemukan.' });
 
-    const divId = req.params.id;    // req.params sekarang pasti ada
+    const divId = req.params.id;
     const actor = req.session.user.username;
-    const ext   = path.extname(req.file.originalname).toLowerCase();
-    const fname = `div-${divId}-${Date.now()}${ext}`;
-    const fpath = path.join(uploadDir, fname);
-    const photoUrl = `/uploads/divisions/${fname}`;
+    const photoUrl = `/api/admin/divisions/${divId}/photo`;
 
     try {
-      // Tulis file dari buffer ke disk
-      fs.writeFileSync(fpath, req.file.buffer);
+      const [old] = await db.execute('SELECT name FROM divisions WHERE id = ?', [divId]);
+      if (!old.length) return res.json({ success: false, message: 'Divisi tidak ditemukan.' });
 
-      // Hapus foto lama kalau ada
-      const [old] = await db.execute('SELECT photo_url, name FROM divisions WHERE id = ?', [divId]);
-      if (!old.length) {
-        fs.unlinkSync(fpath); // hapus file baru karena divisi tidak ada
-        return res.json({ success: false, message: 'Divisi tidak ditemukan.' });
-      }
-      if (old[0].photo_url) {
-        const oldPath = path.join(__dirname, '../public', old[0].photo_url);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      }
-
-      // Simpan ke DB
-      await db.execute('UPDATE divisions SET photo_url = ? WHERE id = ?', [photoUrl, divId]);
+      await db.execute(
+        'UPDATE divisions SET photo_data = ?, photo_mime = ?, photo_url = ? WHERE id = ?',
+        [req.file.buffer, req.file.mimetype, photoUrl, divId]
+      );
       await db.execute(
         'INSERT INTO activity_logs (actor, action, color) VALUES (?, ?, ?)',
         [actor, `🖼️ Admin upload foto untuk ${old[0].name}`, '#06b6d4']
@@ -391,11 +395,28 @@ router.post('/admin/divisions/:id/photo', requireAdmin, (req, res) => {
       res.json({ success: true, photo_url: photoUrl, message: 'Foto berhasil diupload!' });
     } catch (dbErr) {
       console.error(dbErr);
-      // Kalau DB gagal, hapus file yang sudah ditulis
-      if (fs.existsSync(fpath)) fs.unlinkSync(fpath);
       res.status(500).json({ success: false, message: 'Gagal menyimpan foto.' });
     }
   });
+});
+
+// GET route to serve division photo from DB
+router.get('/admin/divisions/:id/photo', async (req, res) => {
+  try {
+    const divId = req.params.id;
+    const [rows] = await db.execute(
+      'SELECT photo_data, photo_mime FROM divisions WHERE id = ?',
+      [divId]
+    );
+    if (!rows.length || !rows[0].photo_data) {
+      return res.status(404).send('Not Found');
+    }
+    res.setHeader('Content-Type', rows[0].photo_mime || 'image/jpeg');
+    res.send(rows[0].photo_data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
 });
 
 // ═══════════════════════════════════════════
@@ -406,15 +427,13 @@ router.delete('/admin/divisions/:id/photo', requireAdmin, async (req, res) => {
   const divId = req.params.id;
   const actor = req.session.user.username;
   try {
-    const [rows] = await db.execute('SELECT photo_url, name FROM divisions WHERE id = ?', [divId]);
+    const [rows] = await db.execute('SELECT name FROM divisions WHERE id = ?', [divId]);
     if (!rows.length) return res.json({ success: false, message: 'Divisi tidak ditemukan.' });
 
-    if (rows[0].photo_url) {
-      const filePath = path.join(__dirname, '../public', rows[0].photo_url);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    }
-
-    await db.execute('UPDATE divisions SET photo_url = NULL WHERE id = ?', [divId]);
+    await db.execute(
+      'UPDATE divisions SET photo_url = NULL, photo_data = NULL, photo_mime = NULL WHERE id = ?',
+      [divId]
+    );
     await db.execute(
       'INSERT INTO activity_logs (actor, action, color) VALUES (?, ?, ?)',
       [actor, `🗑️ Admin menghapus foto ${rows[0].name}`, '#f43f5e']
