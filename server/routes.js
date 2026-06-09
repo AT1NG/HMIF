@@ -15,7 +15,11 @@ const router = express.Router();
 // supaya req.params.id bisa diakses dengan benar
 // ═══════════════════════════════════════════
 const uploadDir = path.join(__dirname, '../public/uploads/divisions');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+} catch (err) {
+  console.warn('⚠️ Gagal membuat folder upload divisions (read-only filesystem):', err.message);
+}
 
 const fileFilter = (req, file, cb) => {
   const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
@@ -215,7 +219,11 @@ router.delete('/admin/members/:id', requireAdmin, async (req, res) => {
 // POST /api/admin/members/:id/photo
 // ═══════════════════════════════════════════
 const memberUploadDir = path.join(__dirname, '../public/uploads/members');
-if (!fs.existsSync(memberUploadDir)) fs.mkdirSync(memberUploadDir, { recursive: true });
+try {
+  if (!fs.existsSync(memberUploadDir)) fs.mkdirSync(memberUploadDir, { recursive: true });
+} catch (err) {
+  console.warn('⚠️ Gagal membuat folder upload members (read-only filesystem):', err.message);
+}
 
 router.post('/admin/members/:id/photo', requireAdmin, (req, res) => {
   upload.single('photo')(req, res, async (err) => {
