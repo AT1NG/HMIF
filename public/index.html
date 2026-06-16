@@ -482,6 +482,7 @@ input,select,textarea{font-family:inherit}
   .divisions-grid{grid-template-columns:1fr}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div class="bg-fx"></div>
@@ -677,7 +678,11 @@ input,select,textarea{font-family:inherit}
         <div class="admin-card" style="grid-column:1/-1">
           <h3 style="justify-content:space-between;flex-wrap:wrap;gap:10px">
             <span><span class="ac-icon" style="background:rgba(6,182,212,.15)">👥</span> Kelola Anggota Himpunan</span>
-            <button onclick="openAddMemberModal()" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);border:none;border-radius:10px;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Tambah Anggota</button>
+            <div style="display:flex;gap:8px">
+              <button onclick="triggerExcelImport()" style="background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:10px;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">📥 Import Excel</button>
+              <button onclick="openAddMemberModal()" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);border:none;border-radius:10px;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Tambah Anggota</button>
+              <input type="file" id="excel-file-input" accept=".xlsx, .xls" style="display:none" onchange="handleExcelImport(event)">
+            </div>
           </h3>
           <div style="overflow-x:auto">
             <table class="user-table">
@@ -1847,6 +1852,86 @@ async function confirmDeleteDiv() {
   if (data.success) { showToast('✅ ' + data.message); renderAdminTab(); }
   else showToast('❌ ' + data.message, 'error');
   pendingDeleteDivId = null;
+}
+
+// ════════════════════════════
+// ADMIN — MEMBER EXCEL IMPORT
+// ════════════════════════════
+function triggerExcelImport() {
+  document.getElementById('excel-file-input').value = '';
+  document.getElementById('excel-file-input').click();
+}
+
+function handleExcelImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      if (typeof XLSX === 'undefined') {
+        showToast('❌ Library SheetJS belum termuat. Coba beberapa saat lagi.', 'error');
+        return;
+      }
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+      if (rows.length < 2) {
+        showToast('❌ Excel kosong atau tidak memiliki data.', 'error');
+        return;
+      }
+
+      // Check if the first row is a header
+      let startIdx = 0;
+      const firstRow = rows[0];
+      const isHeader = firstRow.some(cell => {
+        if (typeof cell !== 'string') return false;
+        const c = cell.toLowerCase().trim();
+        return c === 'nama' || c === 'nim' || c === 'divisi' || c === 'jabatan' || c === 'angkatan';
+      });
+      if (isHeader) {
+        startIdx = 1;
+      }
+
+      const parsedData = [];
+      for (let i = startIdx; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row.length === 0) continue;
+
+        const nama = row[0] ? String(row[0]).trim() : '';
+        const nim = row[1] ? String(row[1]).trim() : '';
+        const divisi = row[2] ? String(row[2]).trim() : '';
+        const jabatan = row[3] ? String(row[3]).trim() : '';
+        const angkatan = row[4] ? parseInt(row[4]) : null;
+
+        // Nama and NIM are absolutely required
+        if (!nama || !nim) continue;
+
+        parsedData.push({ nama, nim, divisi, jabatan, angkatan });
+      }
+
+      if (parsedData.length === 0) {
+        showToast('❌ Tidak ada data valid yang bisa diimpor (kolom Nama dan NIM wajib diisi).', 'error');
+        return;
+      }
+
+      showToast('⏳ Mengimpor data...', 'info');
+      const res = await api('POST', '/admin/members/import', { members: parsedData });
+      if (res.success) {
+        showToast(`✅ Berhasil: ${res.imported} diimpor, ${res.skipped} dilewati.`);
+        renderAdminTab();
+      } else {
+        showToast('❌ ' + res.message, 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Gagal memproses file Excel.', 'error');
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }
 
 // ════════════════════════════

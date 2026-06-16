@@ -160,6 +160,119 @@ router.post('/admin/members', requireAdmin, async (req, res) => {
 });
 
 // ═══════════════════════════════════════════
+// MEMBERS — IMPORT EXCEL
+// POST /api/admin/members/import
+// ═══════════════════════════════════════════
+router.post('/admin/members/import', requireAdmin, async (req, res) => {
+  const actor = req.session.user.username;
+  const { members } = req.body;
+
+  if (!members || !Array.isArray(members)) {
+    return res.json({ success: false, message: 'Data anggota tidak valid.' });
+  }
+
+  try {
+    // 1. Get all divisions to match them by name/slug
+    const [divisions] = await db.execute('SELECT id, name, slug FROM divisions');
+    const divisionMap = {};
+    divisions.forEach(d => {
+      const normName = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const normSlug = d.slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+      divisionMap[normName] = d.id;
+      divisionMap[normSlug] = d.id;
+    });
+
+    // 2. Fetch existing NIMs in members and users for deduplication
+    const [existingMembers] = await db.execute('SELECT nim FROM members');
+    const [existingUsers] = await db.execute('SELECT username FROM users');
+
+    const existingNims = new Set(existingMembers.map(m => m.nim.trim().toLowerCase()));
+    const existingUsernames = new Set(existingUsers.map(u => u.username.trim().toLowerCase()));
+
+    let importedCount = 0;
+    let skippedCount = 0;
+
+    // Deduplicate duplicate NIMs inside the spreadsheet array itself
+    const seenNimsInSheet = new Set();
+    const uniqueMembers = [];
+
+    for (const m of members) {
+      if (!m.nim || !m.nama) {
+        skippedCount++;
+        continue;
+      }
+      const nimStr = String(m.nim).trim();
+      const lowerNim = nimStr.toLowerCase();
+
+      if (seenNimsInSheet.has(lowerNim)) {
+        skippedCount++;
+        continue;
+      }
+      seenNimsInSheet.add(lowerNim);
+      uniqueMembers.push(m);
+    }
+
+    // 3. Process each unique member sequentially in a loop
+    for (const m of uniqueMembers) {
+      const nameStr = String(m.nama).trim();
+      const nimStr = String(m.nim).trim();
+      const lowerNim = nimStr.toLowerCase();
+
+      // Check database duplicates
+      if (existingNims.has(lowerNim) || existingUsernames.has(lowerNim)) {
+        skippedCount++;
+        continue;
+      }
+
+      // Map division name/slug to id
+      const rawDivisi = m.divisi ? String(m.divisi).trim() : '';
+      const normDivisi = rawDivisi.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const divisionId = divisionMap[normDivisi] || null;
+
+      const positionStr = m.jabatan ? String(m.jabatan).trim() : null;
+      const angkatanInt = m.angkatan ? parseInt(m.angkatan) : null;
+
+      try {
+        // A. Insert member
+        await db.execute(
+          'INSERT INTO members (name, nim, division_id, position, angkatan) VALUES (?, ?, ?, ?, ?)',
+          [nameStr, nimStr, divisionId, positionStr, angkatanInt]
+        );
+
+        // B. Hash password (NIM) and insert user account
+        const hash = await bcrypt.hash(nimStr, 10);
+        await db.execute(
+          'INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
+          [nimStr, hash, 'voter']
+        );
+
+        // Add to our Sets to prevent subsequent rows in the loop matching database status
+        existingNims.add(lowerNim);
+        existingUsernames.add(lowerNim);
+
+        importedCount++;
+      } catch (insertErr) {
+        console.error(`Gagal memasukkan data import untuk NIM ${nimStr}:`, insertErr);
+        skippedCount++;
+      }
+    }
+
+    // 4. Log to activity logs
+    if (importedCount > 0) {
+      await db.execute(
+        'INSERT INTO activity_logs (actor, action, color) VALUES (?, ?, ?)',
+        [actor, `📥 Admin mengimpor data Excel: Berhasil menambah ${importedCount} anggota & akun baru (${skippedCount} dilewati)`, '#10b981']
+      );
+    }
+
+    res.json({ success: true, imported: importedCount, skipped: skippedCount });
+  } catch (err) {
+    console.error('Error saat import excel:', err);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan di server.' });
+  }
+});
+
+// ═══════════════════════════════════════════
 // MEMBERS — EDIT
 // PUT /api/admin/members/:id
 // ═══════════════════════════════════════════
